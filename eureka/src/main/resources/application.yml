@@ -1,0 +1,16 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: EurekaServer
+
+
+eureka:
+  client:
+#    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:${server.port}/eureka
+  server:
+    eviction-interval-timer-in-ms: 2000
+

@@ -1,0 +1,23 @@
+server:
+  port: 9000
+
+spring:
+  application:
+    name: GateWay
+  cloud:
+    gateway:
+      routes:
+        - id: system
+          uri: http://localhost:9091
+          predicates:
+            - Path=/system/**
+
+eureka:
+  client:
+#    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:9090/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 15
+
