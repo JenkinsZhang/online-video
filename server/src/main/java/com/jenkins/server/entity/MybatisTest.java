@@ -1,24 +1,15 @@
 package com.jenkins.server.entity;
 
-import org.springframework.stereotype.Component;
+public class MybatisTest {
+    private String id;
 
-import java.io.Serializable;
-
-/**
- * @author JenkinsZhang
- * @date 2020/7/8
- */
-
-@Component
-public class MybatisTest implements Serializable{
-    private int id;
     private String name;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -32,9 +23,13 @@ public class MybatisTest implements Serializable{
 
     @Override
     public String toString() {
-        return "Test{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append(getClass().getSimpleName());
+        sb.append(" [");
+        sb.append("Hash = ").append(hashCode());
+        sb.append(", id=").append(id);
+        sb.append(", name=").append(name);
+        sb.append("]");
+        return sb.toString();
     }
 }
