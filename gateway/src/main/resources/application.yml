@@ -8,11 +8,13 @@ spring:
     gateway:
       routes:
         - id: system
-          uri: http://localhost:9092
+#          uri: http://localhost:9092
+          uri: lb://system
           predicates:
             - Path=/system/**
         - id: business
-          uri: http://localhost:9091
+#          uri: http://localhost:9091
+          uri: lb://business
           predicates:
             - Path=/business/**
 

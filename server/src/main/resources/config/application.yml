@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: VideoSystem
   datasource:
     url: jdbc:mysql://localhost:3306/onlineVideo?serverTimezone=Asia/Shanghai
     username: onlineVideo
