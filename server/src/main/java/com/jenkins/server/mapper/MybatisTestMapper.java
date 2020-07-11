@@ -3,8 +3,14 @@ package com.jenkins.server.mapper;
 import com.jenkins.server.entity.MybatisTest;
 import com.jenkins.server.entity.MybatisTestExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
+
+@Mapper
+@Component
 public interface MybatisTestMapper {
     long countByExample(MybatisTestExample example);
 

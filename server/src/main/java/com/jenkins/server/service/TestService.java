@@ -1,6 +1,8 @@
 package com.jenkins.server.service;
 
 import com.jenkins.server.entity.MybatisTest;
+import com.jenkins.server.entity.MybatisTestExample;
+import com.jenkins.server.mapper.MybatisTestMapper;
 import com.jenkins.server.mapper.TestMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,16 +16,18 @@ import java.util.List;
 @Service
 public class TestService {
 
-    private TestMapper testMapper;
+    private MybatisTestMapper mybatisTestMapper;
 
     @Autowired
-    public TestService(TestMapper testMapper) {
-        this.testMapper = testMapper;
+    public TestService(MybatisTestMapper mybatisTestMapper) {
+        this.mybatisTestMapper = mybatisTestMapper;
     }
 
     public List<MybatisTest> testList()
     {
-        return testMapper.getTest();
+        MybatisTestExample mybatisTestExample = new MybatisTestExample();
+        mybatisTestExample.createCriteria().andIdEqualTo("1");
+        return mybatisTestMapper.selectByExample(mybatisTestExample);
     }
 
 }

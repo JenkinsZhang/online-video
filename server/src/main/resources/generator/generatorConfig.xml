@@ -10,12 +10,12 @@
         <property name="beginningDelimiter" value="`"/>
         <property name="endingDelimiter" value="`"/>
 
-        <!--覆盖生成XML文件-->
+        <!--Override Existing XML Files-->
         <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
         <!-- 生成的实体类添加toString()方法 -->
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
 
-        <!-- 不生成注释 -->
+        <!-- No comment -->
         <commentGenerator>
             <property name="suppressAllComments" value="true"/>
         </commentGenerator>
@@ -26,20 +26,20 @@
                         password="Qianqi971126">
         </jdbcConnection>
 
-        <!-- domain类的位置 -->
+        <!-- Java Entity Position -->
         <javaModelGenerator targetProject="src/main/java"
                             targetPackage="com.jenkins.server.entity"/>
 
-        <!-- mapper xml的位置 -->
+        <!-- Mapper XML Position -->
         <sqlMapGenerator targetProject="src/main/resources"
                          targetPackage="mapper"/>
 
-        <!-- mapper类的位置 -->
+        <!-- Mapper Position ( Mapper Interface) -->
         <javaClientGenerator targetProject="src/main/java"
                              targetPackage="com.jenkins.server.mapper"
                              type="XMLMAPPER" />
 
-        <table tableName="test" domainObjectName="MybatisTest"/>
-
+<!--        <table tableName="test" domainObjectName="MybatisTest"/>-->
+        <table tableName="chapter" domainObjectName="Chapter"/>
     </context>
 </generatorConfiguration>
