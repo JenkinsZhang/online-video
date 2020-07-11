@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/admin/chapter")
 public class ChapterController {
 
     private ChapterService chapterService;
@@ -30,7 +30,7 @@ public class ChapterController {
         this.chapterService = chapterService;
     }
 
-    @GetMapping("/test")
+    @GetMapping("/list")
     public List<ChapterModel> getChapterList (@RequestParam("courseId") String courseId){
         return chapterService.chapterList(courseId);
 
