@@ -1,5 +1,6 @@
 package com.jenkins.server.service;
 
+import com.github.pagehelper.PageHelper;
 import com.jenkins.server.entity.Chapter;
 import com.jenkins.server.entity.ChapterExample;
 import com.jenkins.server.entity.MybatisTest;
@@ -29,6 +30,7 @@ public class ChapterService {
 
     public List<ChapterModel> chapterList(String courseId)
     {
+        PageHelper.startPage(1,5);
         ChapterExample chapterExample = new ChapterExample();
 //        chapterExample.createCriteria().andCourseIdEqualTo(courseId);
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
