@@ -9,9 +9,12 @@ import com.jenkins.server.entity.MybatisTestExample;
 import com.jenkins.server.mapper.ChapterMapper;
 import com.jenkins.server.model.ChapterModel;
 import com.jenkins.server.model.PageModel;
+import com.jenkins.server.utils.CopyUtil;
+import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,13 +40,38 @@ public class ChapterService {
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
         pageModel.setTotal(pageInfo.getTotal());
-        List<ChapterModel> chapterModelList = new ArrayList<>();
-        for (Chapter chapter : chapterList) {
-            ChapterModel chapterModel = new ChapterModel();
-            BeanUtils.copyProperties(chapter,chapterModel);
-            chapterModelList.add(chapterModel);
-        }
+//        List<ChapterModel> chapterModelList = new ArrayList<>();
+//        for (Chapter chapter : chapterList) {
+//            ChapterModel chapterModel = new ChapterModel();
+//            BeanUtils.copyProperties(chapter,chapterModel);
+//            chapterModelList.add(chapterModel);
+//        }
+        List<ChapterModel> chapterModelList = CopyUtil.copyList(chapterList, ChapterModel.class);
         pageModel.setList(chapterModelList);
 
+    }
+
+    public void save(ChapterModel chapterModel)
+    {
+        if(StringUtils.isEmpty(chapterModel.getId()))
+        {
+            insert(chapterModel);
+        }
+        else{
+            update(chapterModel);
+        }
+    }
+
+    public void update(ChapterModel chapterModel)
+    {
+        Chapter copy = CopyUtil.copy(chapterModel, Chapter.class);
+        this.chapterMapper.updateByPrimaryKey(copy);
+    }
+
+    public void insert(ChapterModel chapterModel)
+    {
+        Chapter copy = CopyUtil.copy(chapterModel,Chapter.class);
+        copy.setId(UuidUtil.getShortUuid());
+        this.chapterMapper.insert(copy);
     }
 }

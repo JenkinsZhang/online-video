@@ -34,4 +34,10 @@ public class ChapterController {
         return pageModel;
     }
 
+    @PostMapping("/save")
+    public ChapterModel save(@RequestBody ChapterModel chapterModel)
+    {
+        chapterService.save(chapterModel);
+        return chapterModel;
+    }
 }
