@@ -9,6 +9,15 @@ public class ResponseModel {
     private int code;
     private Object content;
     private String msg;
+    private boolean success = true;
+
+    public  boolean isSuccess() {
+        return success;
+    }
+
+    public  void setSuccess(boolean success) {
+        this.success = success;
+    }
 
     public int getCode() {
         return code;

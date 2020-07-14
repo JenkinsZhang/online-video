@@ -8,6 +8,7 @@ import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.ResponseModel;
 import com.jenkins.server.service.ChapterService;
 import com.jenkins.server.service.TestService;
+import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,6 +32,7 @@ public class ChapterController {
 
     @PostMapping("/list")
     public ResponseModel getChapterList (@RequestBody PageModel pageModel){
+
         chapterService.chapterList(pageModel);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(pageModel);
@@ -40,6 +42,9 @@ public class ChapterController {
     @PostMapping("/save")
     public ResponseModel save(@RequestBody ChapterModel chapterModel)
     {
+        ValidatorUtil.require(chapterModel.getName(), "Name");
+        ValidatorUtil.require(chapterModel.getCourseId(), "Course ID");
+        ValidatorUtil.length(chapterModel.getCourseId(), 1, 8, "Course ID");
         chapterService.save(chapterModel);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(chapterModel);
