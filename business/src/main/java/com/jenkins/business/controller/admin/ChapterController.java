@@ -5,6 +5,7 @@ import com.jenkins.server.entity.MybatisTest;
 import com.jenkins.server.mapper.TestMapper;
 import com.jenkins.server.model.ChapterModel;
 import com.jenkins.server.model.PageModel;
+import com.jenkins.server.model.ResponseModel;
 import com.jenkins.server.service.ChapterService;
 import com.jenkins.server.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,27 @@ public class ChapterController {
     }
 
     @PostMapping("/list")
-    public PageModel getChapterList (@RequestBody PageModel pageModel){
+    public ResponseModel getChapterList (@RequestBody PageModel pageModel){
         chapterService.chapterList(pageModel);
-        return pageModel;
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setContent(pageModel);
+        return responseModel;
     }
 
     @PostMapping("/save")
-    public ChapterModel save(@RequestBody ChapterModel chapterModel)
+    public ResponseModel save(@RequestBody ChapterModel chapterModel)
     {
         chapterService.save(chapterModel);
-        return chapterModel;
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setContent(chapterModel);
+        return responseModel;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseModel delete(@PathVariable("id") String id)
+    {
+        chapterService.delete(id);
+        ResponseModel responseModel= new ResponseModel();
+        return responseModel;
     }
 }
