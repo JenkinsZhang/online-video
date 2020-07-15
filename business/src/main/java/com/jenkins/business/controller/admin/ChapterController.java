@@ -24,6 +24,7 @@ import java.util.List;
 public class ChapterController {
 
     private ChapterService chapterService;
+    public static final String BUSINESS_NAME = "Chapter";
 
     @Autowired
     public ChapterController(ChapterService chapterService) {
