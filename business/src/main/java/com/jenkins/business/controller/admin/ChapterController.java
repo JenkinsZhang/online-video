@@ -1,18 +1,12 @@
 package com.jenkins.business.controller.admin;
 
-import com.jenkins.server.entity.Chapter;
-import com.jenkins.server.entity.MybatisTest;
-import com.jenkins.server.mapper.TestMapper;
 import com.jenkins.server.model.ChapterModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.ResponseModel;
 import com.jenkins.server.service.ChapterService;
-import com.jenkins.server.service.TestService;
 import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * @author JenkinsZhang
