@@ -37,14 +37,9 @@ public class ${Entity}Controller {
     @PostMapping("/save")
     public ResponseModel save(@RequestBody ${Entity}Model ${entity}Model)
     {
-<#list fieldList as field>
-    <#if !field.nullable && field.lowerCamelName !="id">
-        ValidatorUtil.require(${entity}Model.get${field.upperCamelName}(),"${field.upperCamelName}");
-    </#if>
-    <#if (field.length>0)>
-        ValidatorUtil.length(${entity}Model.get${field.upperCamelName}(), 1, ${field.length}, "${field.upperCamelName}");
-    </#if>
-</#list>
+    <#list fieldList as field><#if field.lowerCamelName !="id" && field.lowerCamelName !="sort" && field.lowerCamelName !="createdAt" && field.lowerCamelName !="updatedAt"><#if !field.nullable >
+        ValidatorUtil.require(${entity}Model.get${field.upperCamelName}(),"${field.upperCamelName}");</#if><#if (field.length>0)>
+        ValidatorUtil.length(${entity}Model.get${field.upperCamelName}(), 1, ${field.length}, "${field.upperCamelName}");</#if></#if></#list>
         ${entity}Service.save(${entity}Model);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(${entity}Model);

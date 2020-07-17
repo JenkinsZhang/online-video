@@ -1,18 +1,19 @@
 package com.jenkins.server.service;
-
+import java.util.Date;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jenkins.server.entity.Section;
 import com.jenkins.server.entity.SectionExample;
 import com.jenkins.server.mapper.SectionMapper;
-import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.SectionModel;
+import com.jenkins.server.model.PageModel;
 import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -61,12 +62,18 @@ public class SectionService {
     public void update(SectionModel sectionModel)
     {
         Section copy = CopyUtil.copy(sectionModel, Section.class);
+        Date now  = new Date();
+        copy.setUpdatedAt(now);
         this.sectionMapper.updateByPrimaryKey(copy);
     }
 
     public void insert(SectionModel sectionModel)
     {
+
         Section copy = CopyUtil.copy(sectionModel,Section.class);
+        Date now  = new Date();
+        copy.setCreatedAt(now);
+        copy.setUpdatedAt(now);
         copy.setId(UuidUtil.getShortUuid());
         this.sectionMapper.insert(copy);
     }

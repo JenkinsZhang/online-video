@@ -120,7 +120,6 @@
 
 <script>
     import Pagination from "../../components/Pagination";
-
     export default {
         name: "${Entity}",
         components: {Pagination},
@@ -128,7 +127,7 @@
             return {
             ${entity}: {},
             ${entity}s: [],
-                curPage: 1,
+			curPage: 1,
         }
         },
         methods: {
@@ -162,6 +161,7 @@
             save() {
                 let _this = this;
                 <#list fieldList as field>
+				<#if field.lowerCamelName!="createdAt" && field.lowerCamelName!="updatedAt" &&field.lowerCamelName !="id" &&field.lowerCamelName !="sort">
 				<#if !field.nullable && field.lowerCamelName !="id">
 				if(! Validator.require(_this.${entity}.${field.lowerCamelName},"${field.upperCamelName}")){
 					return;
@@ -171,6 +171,7 @@
 				if(! Validator.length(_this.${entity}.${field.lowerCamelName},"${field.upperCamelName}",1,${field.length})){
 					return;
 				}
+				</#if>
 				</#if>
                 </#list>
 

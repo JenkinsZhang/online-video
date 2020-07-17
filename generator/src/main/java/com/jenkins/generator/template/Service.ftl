@@ -1,5 +1,5 @@
 package com.jenkins.server.service;
-
+import java.util.Date;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jenkins.server.entity.${Entity};
@@ -62,12 +62,28 @@ public class ${Entity}Service {
     public void update(${Entity}Model ${entity}Model)
     {
         ${Entity} copy = CopyUtil.copy(${entity}Model, ${Entity}.class);
+        Date now  = new Date();
+        <#list fieldList as field>
+            <#if field.lowerCamelName = "updatedAt">
+        copy.setUpdatedAt(now);
+            </#if>
+        </#list>
         this.${entity}Mapper.updateByPrimaryKey(copy);
     }
 
     public void insert(${Entity}Model ${entity}Model)
     {
+
         ${Entity} copy = CopyUtil.copy(${entity}Model,${Entity}.class);
+        Date now  = new Date();
+        <#list fieldList as field>
+            <#if field.lowerCamelName = "createdAt">
+        copy.setCreatedAt(now);
+            </#if>
+            <#if field.lowerCamelName = "updatedAt">
+        copy.setUpdatedAt(now);
+            </#if>
+        </#list>
         copy.setId(UuidUtil.getShortUuid());
         this.${entity}Mapper.insert(copy);
     }

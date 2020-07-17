@@ -52,12 +52,12 @@ public class GeneratorApplication {
         map.put("fieldList",fieldList);
         map.put("typeSet",typeSet);
         //Services
-//        TemplateUtil.init("Service.ftl");
-//        TemplateUtil.generate(toServicePath+entity+"Service.java",map);
+        TemplateUtil.init("Service.ftl");
+        TemplateUtil.generate(toServicePath+entity+"Service.java",map);
 
         //Controller
-//        TemplateUtil.init("Controller.ftl");
-//        TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
+        TemplateUtil.init("Controller.ftl");
+        TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
 
         //Model
 //        TemplateUtil.init("Model.ftl");
