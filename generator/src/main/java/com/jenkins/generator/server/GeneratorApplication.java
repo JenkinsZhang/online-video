@@ -25,6 +25,7 @@ public class GeneratorApplication {
     static String toServicePath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/server/src/main/java/com/jenkins/server/service/" ;
     static String toModelPath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/server/src/main/java/com/jenkins/server/model/" ;
     static String toControllerPath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/business/src/main/java/com/jenkins/"+Module+"/controller/admin/" ;
+    static String toVuePath = "/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/admin/src/views/admin/";
     static String sqlGeneratorXmlPath = "/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/server/src/main/resources/generator/generatorConfig.xml";
 
     public static void main(String[] args) throws IOException, TemplateException, DocumentException, SQLException {
@@ -59,7 +60,11 @@ public class GeneratorApplication {
 //        TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
 
         //Model
-        TemplateUtil.init("Model.ftl");
-        TemplateUtil.generate(toModelPath+entity+"Model.java",map);
+//        TemplateUtil.init("Model.ftl");
+//        TemplateUtil.generate(toModelPath+entity+"Model.java",map);
+
+        //Vue
+        TemplateUtil.init("Vue.ftl");
+        TemplateUtil.generate(toVuePath+entity+".vue",map);
     }
 }

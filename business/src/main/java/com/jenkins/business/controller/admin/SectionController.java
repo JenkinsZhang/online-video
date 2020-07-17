@@ -2,6 +2,7 @@ package com.jenkins.business.controller.admin;
 
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.ResponseModel;
+import com.jenkins.server.model.SectionModel;
 import com.jenkins.server.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

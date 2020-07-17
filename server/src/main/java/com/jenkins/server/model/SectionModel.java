@@ -1,61 +1,60 @@
 package com.jenkins.server.model;
 
-import java.util.Date;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
+        import java.util.Date;
+        import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class SectionModel {
 
     /**
-     * id
-     */
+    * id
+    */
     private String id;
 
     /**
-     * Title
-     */
+    * Title
+    */
     private String title;
 
     /**
-     * Course|course.id
-     */
+    * Course|course.id
+    */
     private String courseId;
 
     /**
-     * Chapter|chapter.id
-     */
+    * Chapter|chapter.id
+    */
     private String chapterId;
 
     /**
-     * Video
-     */
+    * Video
+    */
     private String video;
 
     /**
-     * Length|second
-     */
+    * Length|second
+    */
     private Integer time;
 
     /**
-     * Charge|C Charge；F Free
-     */
+    * Charge|C Charge；F Free
+    */
     private String charge;
 
     /**
-     * Order
-     */
+    * Order
+    */
     private Integer sort;
 
     /**
-     * Creation Time
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    * Creation Time
+    */
+        @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createdAt;
 
     /**
-     * Updated Time
-     */
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    * Updated Time
+    */
+        @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updatedAt;
 
     public String getId() {
@@ -145,16 +144,16 @@ public class SectionModel {
         sb.append(getClass().getSimpleName());
         sb.append(" [");
         sb.append("Hash = ").append(hashCode());
-        sb.append(", id=").append(id);
-        sb.append(", title=").append(title);
-        sb.append(", courseId=").append(courseId);
-        sb.append(", chapterId=").append(chapterId);
-        sb.append(", video=").append(video);
-        sb.append(", time=").append(time);
-        sb.append(", charge=").append(charge);
-        sb.append(", sort=").append(sort);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
+            sb.append(", id=").append(id);
+            sb.append(", title=").append(title);
+            sb.append(", courseId=").append(courseId);
+            sb.append(", chapterId=").append(chapterId);
+            sb.append(", video=").append(video);
+            sb.append(", time=").append(time);
+            sb.append(", charge=").append(charge);
+            sb.append(", sort=").append(sort);
+            sb.append(", createdAt=").append(createdAt);
+            sb.append(", updatedAt=").append(updatedAt);
         sb.append("]");
         return sb.toString();
     }
