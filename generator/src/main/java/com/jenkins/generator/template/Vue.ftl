@@ -94,8 +94,8 @@
 					</div>
 					<div class="modal-body">
 						<form class="form-horizontal">
+							<#list fieldList as field>
 							<div class="form-group">
-								<#list fieldList as field>
 								<#if field.lowerCamelName!="createdAt" && field.lowerCamelName!="updatedAt" &&field.lowerCamelName !="id">
 								<label class="col-sm-2 control-label">${field.upperCamelName}</label>
 								<div class="col-sm-10">
@@ -103,10 +103,10 @@
 								</div>
 								<br>
 							</#if>
+							</div>
 						</#list>
+						</form>
 					</div>
-					</form>
-				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 					<button @click="save" type="button" class="btn btn-primary">Save</button>
@@ -161,15 +161,19 @@
             },
             save() {
                 let _this = this;
-            <#--if(! Validator.require(_this.${entity}.name,"Course Name")){-->
-                <#--    return;-->
-                <#--}-->
-                <#--if(! Validator.require(_this.${entity}.courseId,"Course ID")){-->
-                <#--    return;-->
-                <#--}-->
-                <#--if(! Validator.length(_this.${entity}.courseId,"Course ID",1,8)){-->
-                <#--    return;-->
-                <#--}-->
+                <#list fieldList as field>
+				<#if !field.nullable && field.lowerCamelName !="id">
+				if(! Validator.require(_this.${entity}.${field.lowerCamelName},"${field.upperCamelName}")){
+					return;
+				}
+				</#if>
+				<#if (field.length>0)>
+				if(! Validator.length(_this.${entity}.${field.lowerCamelName},"${field.upperCamelName}",1,${field.length})){
+					return;
+				}
+				</#if>
+                </#list>
+
                 // console.log(_this.${entity});
                 this.axios({
                     url: "http://localhost:9000/business/admin/${entity}/save",

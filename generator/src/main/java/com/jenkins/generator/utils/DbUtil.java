@@ -52,6 +52,7 @@ public class DbUtil {
                 }
                 field.setComment(comment);
                 field.setJavaType(sqlTypeToJavaType(type));
+                field.setLength(sqlTypeLength(type));
                 fieldList.add(field);
             }
         }
@@ -100,6 +101,16 @@ public class DbUtil {
         } else {
             return "String";
         }
+    }
+
+    public static int sqlTypeLength(String sqlType)
+    {
+        int length = 0;
+        if(sqlType.toLowerCase().contains("varchar"))
+        {
+            length = Integer.parseInt(sqlType.substring(sqlType.indexOf('(') + 1, sqlType.indexOf(')')));
+        }
+        return length;
     }
     public static void main(String[] args) throws SQLException {
         System.out.println(getColumnsByTableName("section"));

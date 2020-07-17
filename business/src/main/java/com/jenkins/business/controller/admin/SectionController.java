@@ -1,9 +1,10 @@
 package com.jenkins.business.controller.admin;
 
+import com.jenkins.server.model.SectionModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.ResponseModel;
-import com.jenkins.server.model.SectionModel;
 import com.jenkins.server.service.SectionService;
+import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,9 +37,9 @@ public class SectionController {
     @PostMapping("/save")
     public ResponseModel save(@RequestBody SectionModel sectionModel)
     {
-//        ValidatorUtil.require(sectionModel.getName(), "Name");
-//        ValidatorUtil.require(sectionModel.getCourseId(), "Course ID");
-//        ValidatorUtil.length(sectionModel.getCourseId(), 1, 8, "Course ID");
+        ValidatorUtil.require(sectionModel.getTitle(),"Title");
+        ValidatorUtil.length(sectionModel.getTitle(), 1, 50, "Title");
+        ValidatorUtil.length(sectionModel.getVideo(), 1, 200, "Video");
         sectionService.save(sectionModel);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(sectionModel);

@@ -37,9 +37,14 @@ public class ${Entity}Controller {
     @PostMapping("/save")
     public ResponseModel save(@RequestBody ${Entity}Model ${entity}Model)
     {
-        ValidatorUtil.require(${entity}Model.getName(), "Name");
-        ValidatorUtil.require(${entity}Model.getCourseId(), "Course ID");
-        ValidatorUtil.length(${entity}Model.getCourseId(), 1, 8, "Course ID");
+<#list fieldList as field>
+    <#if !field.nullable && field.lowerCamelName !="id">
+        ValidatorUtil.require(${entity}Model.get${field.upperCamelName}(),"${field.upperCamelName}");
+    </#if>
+    <#if (field.length>0)>
+        ValidatorUtil.length(${entity}Model.get${field.upperCamelName}(), 1, ${field.length}, "${field.upperCamelName}");
+    </#if>
+</#list>
         ${entity}Service.save(${entity}Model);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(${entity}Model);

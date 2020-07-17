@@ -12,6 +12,27 @@ public class Field {
     private String lowerCamelName;
     private boolean nullable;
     private String comment;
+    private int length;
+
+    @Override
+    public String toString() {
+        return "Field{" +
+                "javaType='" + javaType + '\'' +
+                ", upperCamelName='" + upperCamelName + '\'' +
+                ", lowerCamelName='" + lowerCamelName + '\'' +
+                ", nullable=" + nullable +
+                ", comment='" + comment + '\'' +
+                ", length=" + length +
+                '}';
+    }
+
+    public int getLength() {
+        return length;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
 
     public String getJavaType() {
         return javaType;
@@ -55,14 +76,4 @@ public class Field {
         this.nullable = nullable;
     }
 
-    @Override
-    public String toString() {
-        return "Field{" +
-                "javaType='" + javaType + '\'' +
-                ", upperCamelName='" + upperCamelName + '\'' +
-                ", lowerCamelName='" + lowerCamelName + '\'' +
-                ", nullable=" + nullable +
-                ", comment='" + comment + '\'' +
-                '}';
-    }
 }
