@@ -29,7 +29,7 @@ create table `section` (
                            `chapter_id` char(8) comment 'Chapter|chapter.id',
                            `video` varchar(200) comment 'Video',
                            `time` int comment 'Length|second',
-                           `charge` char(1) comment 'Charge|C Charge；F Free',
+                           `charge` char(1) comment 'Charge|C Charge; F Free',
                            `sort` int comment 'Order',
                            `created_at` datetime(3) comment 'Creation Time',
                            `updated_at` datetime(3) comment 'Updated Time',
@@ -39,8 +39,29 @@ create table `section` (
 # alter table `section` add column (`vod` char(32) comment 'vod|阿里云vod');
 
 insert into `section` (id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at)
-values ('00000001', 'Test Section 01', '00000001', '00000000', '', 500, 'f', 1, now(), now());
+values ('00000001', 'Test Section 01', '00000001', '00000000', '', 500, 'F', 1, now(), now());
 insert into `section` (id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at)
-values ('00000002', 'Test Section 02', '00000002', '00000000', '', 500, 'f', 1, now(), now());
+values ('00000002', 'Test Section 02', '00000002', '00000000', '', 500, 'F', 1, now(), now());
 insert into `section` (id, title, course_id, chapter_id, video, time, charge, sort, created_at, updated_at)
-values ('00000003', 'Test Section 03', '00000003', '00000000', '', 500, 'f', 1, now(), now());
+values ('00000003', 'Test Section 03', '00000003', '00000000', '', 500, 'F', 1, now(), now());
+
+drop table if exists course;
+create table course (
+                        id char(8) not null default '' comment 'id',
+                        name varchar(50) not null comment 'name',
+                        summary varchar(2000) comment 'summary',
+                        time int default 0 comment 'time length| seconds',
+                        price decimal(8,2) default 0.00 comment 'price（yuan）',
+                        image varchar(100) comment 'cover',
+                        level char(1) comment 'level|enums[CourseLevelEnum]：ONE("1", "Junior"),TWO("2", "Medium"),THREE("3", "Senior")',
+                        charge char(1) comment 'charge|enums[CourseChargeEnum]：CHARGE("C", "Charge"),FREE("F", "Free")',
+                        status char(1) comment 'status|enums[CourseStatusEnum]：PUBLISH("P", "Publish"),DRAFT("D", "Draft")',
+                        enroll integer default 0 comment 'registration number',
+                        sort int comment 'sort',
+                        created_at datetime(3) comment 'created time',
+                        updated_at datetime(3) comment 'updated time',
+                        primary key (id)
+) engine=innodb default charset=utf8mb4 comment='course';
+
+insert into course (id, name, summary, time, price, image, level, charge, status, enroll, sort, created_at, updated_at)
+values ('00000001', 'Test course 01', 'This is a test course', 7200, 19.9, '', 1, 'C', 'P', 100, 0, now(), now());

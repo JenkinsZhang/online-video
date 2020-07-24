@@ -41,6 +41,7 @@ public class GeneratorApplication {
         String module = Module;
 
         List<Field> fieldList = DbUtil.getColumnsByTableName(tableName);
+        System.out.println(fieldList);
         Set<String> typeSet = new HashSet<>();
         for (Field field : fieldList) {
             typeSet.add(field.getJavaType());
@@ -60,8 +61,8 @@ public class GeneratorApplication {
         TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
 
         //Model
-//        TemplateUtil.init("Model.ftl");
-//        TemplateUtil.generate(toModelPath+entity+"Model.java",map);
+        TemplateUtil.init("Model.ftl");
+        TemplateUtil.generate(toModelPath+entity+"Model.java",map);
 
         //Vue
         TemplateUtil.init("Vue.ftl");

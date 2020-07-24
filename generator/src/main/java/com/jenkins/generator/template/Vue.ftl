@@ -121,7 +121,7 @@
 <script>
     import Pagination from "../../components/Pagination";
     export default {
-        name: "${Entity}",
+        name: "${module}-${Entity}",
         components: {Pagination},
         data() {
             return {

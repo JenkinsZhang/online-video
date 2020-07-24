@@ -106,6 +106,7 @@ public class DbUtil {
     public static int sqlTypeLength(String sqlType)
     {
         int length = 0;
+        sqlType = sqlType.replace(",","");
         if(sqlType.toLowerCase().contains("varchar"))
         {
             length = Integer.parseInt(sqlType.substring(sqlType.indexOf('(') + 1, sqlType.indexOf(')')));
