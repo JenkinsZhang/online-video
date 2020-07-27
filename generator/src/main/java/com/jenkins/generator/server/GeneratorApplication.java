@@ -53,19 +53,19 @@ public class GeneratorApplication {
         map.put("fieldList",fieldList);
         map.put("typeSet",typeSet);
         //Services
-        TemplateUtil.init("Service.ftl");
-        TemplateUtil.generate(toServicePath+entity+"Service.java",map);
+//        TemplateUtil.init("Service.ftl");
+//        TemplateUtil.generate(toServicePath+entity+"Service.java",map);
 
         //Controller
         TemplateUtil.init("Controller.ftl");
         TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
 
         //Model
-        TemplateUtil.init("Model.ftl");
-        TemplateUtil.generate(toModelPath+entity+"Model.java",map);
+//        TemplateUtil.init("Model.ftl");
+//        TemplateUtil.generate(toModelPath+entity+"Model.java",map);
 
         //Vue
-        TemplateUtil.init("Vue.ftl");
-        TemplateUtil.generate(toVuePath+entity+".vue",map);
+//        TemplateUtil.init("Vue.ftl");
+//        TemplateUtil.generate(toVuePath+entity+".vue",map);
     }
 }

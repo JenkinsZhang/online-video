@@ -39,7 +39,7 @@ public class ${Entity}Controller {
     {
     <#list fieldList as field><#if field.lowerCamelName !="id" && field.lowerCamelName !="sort" && field.lowerCamelName !="createdAt" && field.lowerCamelName !="updatedAt"><#if !field.nullable >
         ValidatorUtil.require(${entity}Model.get${field.upperCamelName}(),"${field.upperCamelName}");</#if><#if (field.length>0)>
-        ValidatorUtil.length(${entity}Model.get${field.upperCamelName}(), 1, ${field.length}, "${field.upperCamelName}");</#if></#if></#list>
+        ValidatorUtil.length(${entity}Model.get${field.upperCamelName}(), 1, ${field.length?c}, "${field.upperCamelName}");</#if></#if></#list>
         ${entity}Service.save(${entity}Model);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(${entity}Model);

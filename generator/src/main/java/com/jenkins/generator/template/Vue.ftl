@@ -168,7 +168,7 @@
 				}
 				</#if>
 				<#if (field.length>0)>
-				if(! Validator.length(_this.${entity}.${field.lowerCamelName},"${field.upperCamelName}",1,${field.length})){
+				if(! Validator.length(_this.${entity}.${field.lowerCamelName},"${field.upperCamelName}",1,${field.length?c})){
 					return;
 				}
 				</#if>
