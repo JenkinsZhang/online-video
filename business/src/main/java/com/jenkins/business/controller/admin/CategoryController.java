@@ -8,6 +8,9 @@ import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author JenkinsZhang
  * @date 2020/7/7
@@ -27,10 +30,17 @@ public class CategoryController {
 
     @PostMapping("/list")
     public ResponseModel getCategoryList (@RequestBody PageModel pageModel){
-
         categoryService.categoryList(pageModel);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(pageModel);
+        return responseModel;
+    }
+    @PostMapping("/all")
+    public ResponseModel getCategoryList (){
+
+        List<CategoryModel> all = categoryService.all();
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setContent(all);
         return responseModel;
     }
 

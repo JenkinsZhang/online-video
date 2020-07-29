@@ -11,6 +11,8 @@ import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -21,6 +23,7 @@ import java.util.List;
  * @date 2020/7/10
  */
 @Service
+@EnableTransactionManagement
 public class CategoryService {
 
     private CategoryMapper categoryMapper;
@@ -49,6 +52,15 @@ public class CategoryService {
 
     }
 
+    public List<CategoryModel> all()
+    {
+        CategoryExample categoryExample = new CategoryExample();
+        categoryExample.setOrderByClause("sort asc");
+        List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
+        List<CategoryModel> categoryModelList = CopyUtil.copyList(categoryList, CategoryModel.class);
+        return categoryModelList;
+
+    }
     public void save(CategoryModel categoryModel)
     {
         if(StringUtils.isEmpty(categoryModel.getId()))
@@ -76,8 +88,22 @@ public class CategoryService {
         this.categoryMapper.insert(copy);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void delete(String id)
     {
+        deleteChildren(id);
         categoryMapper.deleteByPrimaryKey(id);
+    }
+
+    public void deleteChildren(String id)
+    {
+        Category category = categoryMapper.selectByPrimaryKey(id);
+        if(category.getParent().equals("00000000"))
+        {
+            CategoryExample categoryExample = new CategoryExample();
+            CategoryExample.Criteria criteria = categoryExample.createCriteria();
+            criteria.andParentEqualTo(category.getId());
+            categoryMapper.deleteByExample(categoryExample);
+        }
     }
 }
