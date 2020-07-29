@@ -1,6 +1,7 @@
 package com.jenkins.business.controller.admin;
 
 import com.jenkins.server.model.ChapterModel;
+import com.jenkins.server.model.ChapterPageModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.ResponseModel;
 import com.jenkins.server.service.ChapterService;
@@ -26,11 +27,12 @@ public class ChapterController {
     }
 
     @PostMapping("/list")
-    public ResponseModel getChapterList (@RequestBody PageModel pageModel){
+    public ResponseModel getChapterList (@RequestBody ChapterPageModel chapterPageModel){
 
-        chapterService.chapterList(pageModel);
+        ValidatorUtil.require(chapterPageModel.getCourseId(),"Course ID");
+        chapterService.chapterList(chapterPageModel);
         ResponseModel responseModel = new ResponseModel();
-        responseModel.setContent(pageModel);
+        responseModel.setContent(chapterPageModel);
         return responseModel;
     }
 

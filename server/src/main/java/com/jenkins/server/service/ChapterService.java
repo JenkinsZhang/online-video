@@ -6,6 +6,7 @@ import com.jenkins.server.entity.Chapter;
 import com.jenkins.server.entity.ChapterExample;
 import com.jenkins.server.mapper.ChapterMapper;
 import com.jenkins.server.model.ChapterModel;
+import com.jenkins.server.model.ChapterPageModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
@@ -30,13 +31,17 @@ public class ChapterService {
         this.chapterMapper = chapterMapper;
     }
 
-    public void chapterList(PageModel pageModel)
+    public void chapterList(ChapterPageModel chapterPageModel)
     {
-        PageHelper.startPage(pageModel.getPage(),pageModel.getPageSize());
+        PageHelper.startPage(chapterPageModel.getPage(),chapterPageModel.getPageSize());
         ChapterExample chapterExample = new ChapterExample();
+        ChapterExample.Criteria criteria = chapterExample.createCriteria();
+        if(!StringUtils.isEmpty(chapterPageModel.getCourseId())){
+            criteria.andCourseIdEqualTo(chapterPageModel.getCourseId());
+        }
         List<Chapter> chapterList = chapterMapper.selectByExample(chapterExample);
         PageInfo<Chapter> pageInfo = new PageInfo<>(chapterList);
-        pageModel.setTotal(pageInfo.getTotal());
+        chapterPageModel.setTotal(pageInfo.getTotal());
 //        List<ChapterModel> chapterModelList = new ArrayList<>();
 //        for (Chapter chapter : chapterList) {
 //            ChapterModel chapterModel = new ChapterModel();
@@ -44,7 +49,7 @@ public class ChapterService {
 //            chapterModelList.add(chapterModel);
 //        }
         List<ChapterModel> chapterModelList = CopyUtil.copyList(chapterList, ChapterModel.class);
-        pageModel.setList(chapterModelList);
+        chapterPageModel.setList(chapterModelList);
 
     }
 

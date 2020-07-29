@@ -3,6 +3,7 @@ package com.jenkins.business.controller.admin;
 import com.jenkins.server.model.SectionModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.ResponseModel;
+import com.jenkins.server.model.SectionPageModel;
 import com.jenkins.server.service.SectionService;
 import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,11 @@ public class SectionController {
     }
 
     @PostMapping("/list")
-    public ResponseModel getSectionList (@RequestBody PageModel pageModel){
+    public ResponseModel getSectionList (@RequestBody SectionPageModel sectionPageModel){
 
-        sectionService.sectionList(pageModel);
+        sectionService.sectionList(sectionPageModel);
         ResponseModel responseModel = new ResponseModel();
-        responseModel.setContent(pageModel);
+        responseModel.setContent(sectionPageModel);
         return responseModel;
     }
 

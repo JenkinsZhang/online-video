@@ -7,7 +7,7 @@ spring:
 
 mybatis:
   type-aliases-package: com.jenkins.server
-  mapper-locations: classpath*:mapper/*Mapper.xml
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
 logging:
   level:
     com.jenkins.server.mapper:

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.jenkins.server.entity.Course;
 import com.jenkins.server.entity.CourseExample;
 import com.jenkins.server.mapper.CourseMapper;
+import com.jenkins.server.mapper.my.MyCourseMapper;
 import com.jenkins.server.model.CourseModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.utils.CopyUtil;
@@ -24,10 +25,12 @@ import java.util.List;
 public class CourseService {
 
     private CourseMapper courseMapper;
+    private MyCourseMapper myCourseMapper;
 
     @Autowired
-    public CourseService(CourseMapper courseMapper) {
+    public CourseService(CourseMapper courseMapper,MyCourseMapper myCourseMapper) {
         this.courseMapper = courseMapper;
+        this.myCourseMapper = myCourseMapper;
     }
 
     public void courseList(PageModel pageModel)
@@ -81,5 +84,9 @@ public class CourseService {
     public void delete(String id)
     {
         courseMapper.deleteByPrimaryKey(id);
+    }
+
+    public int updateTime(String courseId){
+        return myCourseMapper.updateTime(courseId);
     }
 }

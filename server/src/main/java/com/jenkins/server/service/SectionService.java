@@ -7,10 +7,13 @@ import com.jenkins.server.entity.SectionExample;
 import com.jenkins.server.mapper.SectionMapper;
 import com.jenkins.server.model.SectionModel;
 import com.jenkins.server.model.PageModel;
+import com.jenkins.server.model.SectionPageModel;
 import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -21,22 +24,33 @@ import java.util.List;
  * @date 2020/7/10
  */
 @Service
+@EnableTransactionManagement
 public class SectionService {
 
     private SectionMapper sectionMapper;
+    private CourseService courseService;
 
     @Autowired
-    public SectionService(SectionMapper sectionMapper) {
+    public SectionService(SectionMapper sectionMapper, CourseService courseService) {
         this.sectionMapper = sectionMapper;
+        this.courseService =  courseService;
     }
 
-    public void sectionList(PageModel pageModel)
+    public void sectionList(SectionPageModel sectionPageModel)
     {
-        PageHelper.startPage(pageModel.getPage(),pageModel.getPageSize());
+        PageHelper.startPage(sectionPageModel.getPage(),sectionPageModel.getPageSize());
         SectionExample sectionExample = new SectionExample();
+        SectionExample.Criteria criteria = sectionExample.createCriteria();
+        if(!StringUtils.isEmpty(sectionPageModel.getChapterId())){
+            criteria.andChapterIdEqualTo(sectionPageModel.getChapterId());
+        }
+        if(!StringUtils.isEmpty(sectionPageModel.getCourseId()))
+        {
+            criteria.andCourseIdEqualTo(sectionPageModel.getCourseId());
+        }
         List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
         PageInfo<Section> pageInfo = new PageInfo<>(sectionList);
-        pageModel.setTotal(pageInfo.getTotal());
+        sectionPageModel.setTotal(pageInfo.getTotal());
 //        List<SectionModel> sectionModelList = new ArrayList<>();
 //        for (Section section} : sectionList) {
 //            SectionModel sectionModel = new SectionModel();
@@ -44,10 +58,11 @@ public class SectionService {
 //            sectionModelList.add(sectionModel);
 //        }
         List<SectionModel> sectionModelList = CopyUtil.copyList(sectionList, SectionModel.class);
-        pageModel.setList(sectionModelList);
+        sectionPageModel.setList(sectionModelList);
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void save(SectionModel sectionModel)
     {
         if(StringUtils.isEmpty(sectionModel.getId()))
@@ -57,6 +72,7 @@ public class SectionService {
         else{
             update(sectionModel);
         }
+        this.courseService.updateTime(sectionModel.getCourseId());
     }
 
     public void update(SectionModel sectionModel)
