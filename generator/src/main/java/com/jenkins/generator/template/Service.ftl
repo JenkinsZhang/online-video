@@ -34,6 +34,11 @@ public class ${Entity}Service {
     {
         PageHelper.startPage(pageModel.getPage(),pageModel.getPageSize());
         ${Entity}Example ${entity}Example = new ${Entity}Example();
+        <#list fieldList as field>
+            <#if field.lowerCamelName=='sort'>
+                ${entity}Example.setOrderByClause("sort asc");
+            </#if>
+        </#list>
         List<${Entity}> ${entity}List = ${entity}Mapper.selectByExample(${entity}Example);
         PageInfo<${Entity}> pageInfo = new PageInfo<>(${entity}List);
         pageModel.setTotal(pageInfo.getTotal());
