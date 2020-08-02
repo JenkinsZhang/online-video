@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jenkins.server.entity.Chapter;
 import com.jenkins.server.entity.ChapterExample;
+import com.jenkins.server.entity.Section;
 import com.jenkins.server.mapper.ChapterMapper;
 import com.jenkins.server.model.ChapterModel;
 import com.jenkins.server.model.ChapterPageModel;
@@ -12,6 +13,7 @@ import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -24,12 +26,17 @@ import java.util.List;
 @Service
 public class ChapterService {
 
+    @Autowired
     private ChapterMapper  chapterMapper;
 
     @Autowired
-    public ChapterService(ChapterMapper chapterMapper) {
-        this.chapterMapper = chapterMapper;
-    }
+    private SectionService sectionService;
+
+//    @Autowired
+//    public ChapterService(ChapterMapper chapterMapper,SectionService sectionService) {
+//        this.chapterMapper = chapterMapper;
+//        this.sectionService = sectionService;
+//    }
 
     public void chapterList(ChapterPageModel chapterPageModel)
     {
@@ -53,6 +60,19 @@ public class ChapterService {
 
     }
 
+    public  List<Chapter> chapterList(String courseId)
+    {
+        List<Chapter> chapters = new ArrayList<>();
+        ChapterExample chapterExample = new ChapterExample();
+        ChapterExample.Criteria criteria = chapterExample.createCriteria();
+        if(!StringUtils.isEmpty(courseId)){
+            criteria.andCourseIdEqualTo(courseId);
+        }
+        chapters = chapterMapper.selectByExample(chapterExample);
+
+        return chapters;
+
+    }
     public void save(ChapterModel chapterModel)
     {
         if(StringUtils.isEmpty(chapterModel.getId()))
@@ -77,8 +97,22 @@ public class ChapterService {
         this.chapterMapper.insert(copy);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void delete(String id)
     {
+        deleteChildrenSections(id);
         chapterMapper.deleteByPrimaryKey(id);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteChildrenSections(String id)
+    {
+        Chapter chapter = chapterMapper.selectByPrimaryKey(id);
+        String courseId = chapter.getCourseId();
+        List<Section> sections = sectionService.sectionList(courseId, id);
+        for (Section section : sections) {
+            String sectionId = section.getId();
+            sectionService.delete(sectionId);
+        }
     }
 }

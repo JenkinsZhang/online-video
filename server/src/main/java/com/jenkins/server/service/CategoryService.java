@@ -91,11 +91,11 @@ public class CategoryService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(String id)
     {
-        deleteChildren(id);
+        deleteChildrenCategorys(id);
         categoryMapper.deleteByPrimaryKey(id);
     }
 
-    public void deleteChildren(String id)
+    public void deleteChildrenCategorys(String id)
     {
         Category category = categoryMapper.selectByPrimaryKey(id);
         if(category.getParent().equals("00000000"))

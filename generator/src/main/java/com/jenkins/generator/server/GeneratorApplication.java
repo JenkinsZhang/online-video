@@ -57,15 +57,15 @@ public class GeneratorApplication {
         TemplateUtil.generate(toServicePath+entity+"Service.java",map);
 
         //Controller
-        TemplateUtil.init("Controller.ftl");
-        TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
+//        TemplateUtil.init("Controller.ftl");
+//        TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
 
         //Model
         TemplateUtil.init("Model.ftl");
         TemplateUtil.generate(toModelPath+entity+"Model.java",map);
 
         //Vue
-        TemplateUtil.init("Vue.ftl");
-        TemplateUtil.generate(toVuePath+entity+".vue",map);
+//        TemplateUtil.init("Vue.ftl");
+//        TemplateUtil.generate(toVuePath+entity+".vue",map);
     }
 }

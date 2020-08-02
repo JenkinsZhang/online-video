@@ -27,14 +27,16 @@ import java.util.List;
 @EnableTransactionManagement
 public class SectionService {
 
+    @Autowired
     private SectionMapper sectionMapper;
+    @Autowired
     private CourseService courseService;
 
-    @Autowired
-    public SectionService(SectionMapper sectionMapper, CourseService courseService) {
-        this.sectionMapper = sectionMapper;
-        this.courseService =  courseService;
-    }
+//    @Autowired
+//    public SectionService(SectionMapper sectionMapper, CourseService courseService) {
+//        this.sectionMapper = sectionMapper;
+//        this.courseService =  courseService;
+//    }
 
     public void sectionList(SectionPageModel sectionPageModel)
     {
@@ -62,6 +64,22 @@ public class SectionService {
 
     }
 
+    public List<Section> sectionList(String courseId,String chapterId)
+    {
+        List<Section> sectionList = new ArrayList<>();
+        SectionExample sectionExample = new SectionExample();
+        SectionExample.Criteria criteria = sectionExample.createCriteria();
+        if(!StringUtils.isEmpty(chapterId)){
+            criteria.andChapterIdEqualTo(chapterId);
+        }
+        if(!StringUtils.isEmpty(courseId))
+        {
+            criteria.andCourseIdEqualTo(courseId);
+        }
+        sectionList = sectionMapper.selectByExample(sectionExample);
+        return sectionList;
+    }
+
     @Transactional(rollbackFor = Exception.class)
     public void save(SectionModel sectionModel)
     {
@@ -83,6 +101,7 @@ public class SectionService {
         this.sectionMapper.updateByPrimaryKey(copy);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void insert(SectionModel sectionModel)
     {
 
@@ -92,10 +111,15 @@ public class SectionService {
         copy.setUpdatedAt(now);
         copy.setId(UuidUtil.getShortUuid());
         this.sectionMapper.insert(copy);
+        courseService.updateTime(sectionModel.getCourseId());
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void delete(String id)
     {
+        Section section = sectionMapper.selectByPrimaryKey(id);
+        String courseId = section.getCourseId();
         sectionMapper.deleteByPrimaryKey(id);
+        courseService.updateTime(courseId);
     }
 }

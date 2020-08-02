@@ -1,12 +1,16 @@
 package com.jenkins.business.controller.admin;
 
+import com.jenkins.server.model.CourseCategoryModel;
 import com.jenkins.server.model.CourseModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.ResponseModel;
+import com.jenkins.server.service.CourseCategoryService;
 import com.jenkins.server.service.CourseService;
 import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author JenkinsZhang
@@ -18,11 +22,13 @@ import org.springframework.web.bind.annotation.*;
 public class CourseController {
 
     private CourseService courseService;
+    private CourseCategoryService courseCategoryService;
     public static final String BUSINESS_NAME = "Course";
 
     @Autowired
-    public CourseController(CourseService courseService) {
+    public CourseController(CourseService courseService,CourseCategoryService courseCategoryService) {
         this.courseService = courseService;
+        this.courseCategoryService = courseCategoryService;
     }
 
     @PostMapping("/list")
@@ -52,6 +58,15 @@ public class CourseController {
     {
         courseService.delete(id);
         ResponseModel responseModel= new ResponseModel();
+        return responseModel;
+    }
+
+    @PostMapping("/list-category/{courseId}")
+    public ResponseModel listCategory(@PathVariable("courseId") String courseId)
+    {
+        List<CourseCategoryModel> courseCategoryModels = courseCategoryService.listByCourse(courseId);
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setContent(courseCategoryModels);
         return responseModel;
     }
 }
