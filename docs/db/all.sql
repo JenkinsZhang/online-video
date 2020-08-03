@@ -130,3 +130,11 @@ create table `course_category` (
                                    `category_id` char(8) comment 'category|course.id',
                                    primary key (`id`)
 ) engine=innodb default charset=utf8mb4 comment='course category';
+
+#Course Content
+drop table if exists `course_content`;
+create table `course_content` (
+                                  `id` char(8) not null default '' comment 'course.id',
+                                  `content` mediumtext not null comment 'course content',
+                                  primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='课程内容';
