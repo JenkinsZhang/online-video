@@ -37,16 +37,10 @@ public class CategoryService {
     {
         PageHelper.startPage(pageModel.getPage(),pageModel.getPageSize());
         CategoryExample categoryExample = new CategoryExample();
-                categoryExample.setOrderByClause("sort asc");
+        categoryExample.setOrderByClause("sort asc");
         List<Category> categoryList = categoryMapper.selectByExample(categoryExample);
         PageInfo<Category> pageInfo = new PageInfo<>(categoryList);
         pageModel.setTotal(pageInfo.getTotal());
-//        List<CategoryModel> categoryModelList = new ArrayList<>();
-//        for (Category category} : categoryList) {
-//            CategoryModel categoryModel = new CategoryModel();
-//            BeanUtils.copyProperties(category},categoryModel);
-//            categoryModelList.add(categoryModel);
-//        }
         List<CategoryModel> categoryModelList = CopyUtil.copyList(categoryList, CategoryModel.class);
         pageModel.setList(categoryModelList);
 
