@@ -5,6 +5,7 @@ import com.jenkins.server.service.CourseCategoryService;
 import com.jenkins.server.service.CourseService;
 import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.swing.text.html.parser.ContentModel;
@@ -74,6 +75,10 @@ public class CourseController {
         CourseContentModel courseContent = courseService.findCourseContent(id);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(courseContent);
+        if(courseContent == null || StringUtils.isEmpty(courseContent))
+        {
+            responseModel.setMsg("Currently no content for this course!");
+        }
         return responseModel;
     }
 
@@ -84,6 +89,13 @@ public class CourseController {
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(courseContentModel);
         return responseModel;
+    }
+
+    @PostMapping("/sort")
+    public ResponseModel sort(@RequestBody SortModel sortModel)
+    {
+        courseService.sort(sortModel);
+        return new ResponseModel();
     }
 
 }

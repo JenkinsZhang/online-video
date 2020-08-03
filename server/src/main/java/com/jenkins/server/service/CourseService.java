@@ -12,6 +12,7 @@ import com.jenkins.server.mapper.my.MyCourseMapper;
 import com.jenkins.server.model.CourseContentModel;
 import com.jenkins.server.model.CourseModel;
 import com.jenkins.server.model.PageModel;
+import com.jenkins.server.model.SortModel;
 import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,15 +55,10 @@ public class CourseService {
     {
         PageHelper.startPage(pageModel.getPage(),pageModel.getPageSize());
         CourseExample courseExample = new CourseExample();
+        courseExample.setOrderByClause("sort asc");
         List<Course> courseList = courseMapper.selectByExample(courseExample);
         PageInfo<Course> pageInfo = new PageInfo<>(courseList);
         pageModel.setTotal(pageInfo.getTotal());
-//        List<CourseModel> courseModelList = new ArrayList<>();
-//        for (Course course} : courseList) {
-//            CourseModel courseModel = new CourseModel();
-//            BeanUtils.copyProperties(course},courseModel);
-//            courseModelList.add(courseModel);
-//        }
         List<CourseModel> courseModelList = CopyUtil.copyList(courseList, CourseModel.class);
         pageModel.setList(courseModelList);
 
@@ -139,6 +135,22 @@ public class CourseService {
         if(i ==0)
         {
             courseContentMapper.insert(courseContent);
+        }
+    }
+
+    @Transactional
+    public void sort(SortModel sortModel) {
+
+        myCourseMapper.updateSort(sortModel);
+
+
+        if (sortModel.getNewSort() > sortModel.getOldSort()) {
+            myCourseMapper.moveSortsForward(sortModel);
+        }
+
+
+        if (sortModel.getNewSort() < sortModel.getOldSort()) {
+            myCourseMapper.moveSortsBackward(sortModel);
         }
     }
 }
