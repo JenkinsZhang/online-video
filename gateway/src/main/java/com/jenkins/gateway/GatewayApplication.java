@@ -41,7 +41,6 @@ public class GatewayApplication {
         corsConfiguration.addAllowedOrigin("*");
         corsConfiguration.setAllowCredentials(Boolean.TRUE);
         corsConfiguration.addAllowedMethod("*");
-
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource(new PathPatternParser());
         source.registerCorsConfiguration("/**",corsConfiguration);
 

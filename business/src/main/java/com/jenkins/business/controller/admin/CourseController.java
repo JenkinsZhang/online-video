@@ -1,15 +1,13 @@
 package com.jenkins.business.controller.admin;
 
-import com.jenkins.server.model.CourseCategoryModel;
-import com.jenkins.server.model.CourseModel;
-import com.jenkins.server.model.PageModel;
-import com.jenkins.server.model.ResponseModel;
+import com.jenkins.server.model.*;
 import com.jenkins.server.service.CourseCategoryService;
 import com.jenkins.server.service.CourseService;
 import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.swing.text.html.parser.ContentModel;
 import java.util.List;
 
 /**
@@ -69,4 +67,23 @@ public class CourseController {
         responseModel.setContent(courseCategoryModels);
         return responseModel;
     }
+
+    @GetMapping("/find-content/{id}")
+    public ResponseModel findContent(@PathVariable("id") String id)
+    {
+        CourseContentModel courseContent = courseService.findCourseContent(id);
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setContent(courseContent);
+        return responseModel;
+    }
+
+    @PostMapping("/save-content")
+    public ResponseModel saveContent(@RequestBody CourseContentModel courseContentModel)
+    {
+        courseService.saveContent(courseContentModel);
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setContent(courseContentModel);
+        return responseModel;
+    }
+
 }

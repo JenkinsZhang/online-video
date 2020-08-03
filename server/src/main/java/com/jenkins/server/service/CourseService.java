@@ -4,9 +4,12 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jenkins.server.entity.Chapter;
 import com.jenkins.server.entity.Course;
+import com.jenkins.server.entity.CourseContent;
 import com.jenkins.server.entity.CourseExample;
+import com.jenkins.server.mapper.CourseContentMapper;
 import com.jenkins.server.mapper.CourseMapper;
 import com.jenkins.server.mapper.my.MyCourseMapper;
+import com.jenkins.server.model.CourseContentModel;
 import com.jenkins.server.model.CourseModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.utils.CopyUtil;
@@ -36,6 +39,8 @@ public class CourseService {
     private CourseCategoryService courseCategoryService;
     @Autowired
     private ChapterService chapterService;
+    @Autowired
+    private CourseContentMapper courseContentMapper;
 
 //    @Autowired
 //    public CourseService(CourseMapper courseMapper, MyCourseMapper myCourseMapper, CourseCategoryService courseCategoryService, ChapterService chapterService) {
@@ -115,5 +120,25 @@ public class CourseService {
 
     public int updateTime(String courseId){
         return myCourseMapper.updateTime(courseId);
+    }
+
+    public CourseContentModel findCourseContent(String id)
+    {
+        CourseContent courseContent = courseContentMapper.selectByPrimaryKey(id);
+        if(courseContent == null)
+        {
+            return  null;
+        }
+        return CopyUtil.copy(courseContent,CourseContentModel.class);
+    }
+
+    public void saveContent(CourseContentModel courseContentModel)
+    {
+        CourseContent courseContent = CopyUtil.copy(courseContentModel,CourseContent.class);
+        int i = courseContentMapper.updateByPrimaryKeyWithBLOBs(courseContent);
+        if(i ==0)
+        {
+            courseContentMapper.insert(courseContent);
+        }
     }
 }
