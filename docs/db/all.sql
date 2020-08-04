@@ -137,4 +137,51 @@ create table `course_content` (
                                   `id` char(8) not null default '' comment 'course.id',
                                   `content` mediumtext not null comment 'course content',
                                   primary key (`id`)
-) engine=innodb default charset=utf8mb4 comment='课程内容';
+) engine=innodb default charset=utf8mb4 comment='course content';
+
+
+-- Course Content Files
+drop table if exists `course_content_file`;
+create table `course_content_file` (
+                                       `id` char(8) not null default '' comment 'id',
+                                       `course_id` char(8) not null comment 'course id',
+                                       `url` varchar(100) comment 'url ',
+                                       `name` varchar(100) comment 'file name',
+                                       `size` int comment 'size|byte b',
+                                       primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='Course Content Files';
+
+-- Teacher
+drop table if exists `teacher`;
+create table `teacher` (
+                           `id` char(8) not null default '' comment 'id',
+                           `name` varchar(50) not null comment 'name',
+                           `nickname` varchar(50) comment 'nickname',
+                           `image` varchar(100) comment 'avatar',
+                           `position` varchar(50) comment 'position',
+                           `motto` varchar(50) comment 'motto',
+                           `intro` varchar(500) comment 'intro',
+                           primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='teacher';
+
+-- File
+drop table if exists `file`;
+create table `file` (
+                        `id` char(8) not null default '' comment 'id',
+                        `path` varchar(100) not null comment 'relative path',
+                        `name` varchar(100) comment 'file name',
+                        `suffix` varchar(10) comment 'file suffix',
+                        `size` int comment 'file size|Byte B',
+                        `use` char(1) comment 'use|Enum[FileUseEnum]：COURSE("C", "Course"), TEACHER("T", "Teacher")',
+                        `created_at` datetime(3) comment 'created_at',
+                        `updated_at` datetime(3) comment 'updated_at',
+                        primary key (`id`),
+                        unique key `path_unique` (`path`)
+) engine=innodb default charset=utf8mb4 comment='file';
+
+alter table `file` add column (`shard_index` int comment 'shard index');
+alter table `file` add column (`shard_size` int comment 'shard size|B');
+alter table `file` add column (`shard_total` int comment 'shard total');
+alter table `file` add column (`key` varchar(32) comment 'file key');
+alter table `file` add unique key key_unique (`key`);
+alter table `file` add column (`vod` char(32) comment 'vod|Aliyun vod');
