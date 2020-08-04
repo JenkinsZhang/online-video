@@ -63,6 +63,8 @@ create table course (
                         primary key (id)
 ) engine=innodb default charset=utf8mb4 comment='course';
 
+alter table `course` add column (`teacher_id` char(8) comment 'teacher|teacher.id');
+
 insert into course (id, name, summary, time, price, image, level, charge, status, enroll, sort, created_at, updated_at)
 values ('00000001', 'Test course 01', 'This is a test course', 7200, 19.9, '', 1, 'C', 'P', 100, 0, now(), now());
 

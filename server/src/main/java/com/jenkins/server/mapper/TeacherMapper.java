@@ -3,8 +3,13 @@ package com.jenkins.server.mapper;
 import com.jenkins.server.entity.Teacher;
 import com.jenkins.server.entity.TeacherExample;
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
 
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Component;
+
+@Mapper
+@Component
 public interface TeacherMapper {
     long countByExample(TeacherExample example);
 

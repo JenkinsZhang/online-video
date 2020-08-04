@@ -2,6 +2,7 @@ package com.jenkins.server.service;
 import java.util.Date;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.jenkins.server.entity.CategoryExample;
 import com.jenkins.server.entity.Teacher;
 import com.jenkins.server.entity.TeacherExample;
 import com.jenkins.server.mapper.TeacherMapper;
@@ -78,5 +79,13 @@ public class TeacherService {
     public void delete(String id)
     {
         teacherMapper.deleteByPrimaryKey(id);
+    }
+
+    public List<TeacherModel> all()
+    {
+        TeacherExample teacherExample = new TeacherExample();
+        teacherExample.setOrderByClause("name asc");
+        List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
+        return CopyUtil.copyList(teachers,TeacherModel.class);
     }
 }
