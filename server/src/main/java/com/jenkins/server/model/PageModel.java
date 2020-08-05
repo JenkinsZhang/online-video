@@ -5,6 +5,7 @@ import java.util.List;
 /**
  * @author JenkinsZhang
  * @date 2020/7/13
+ * Used for pagination. It contains page No., total pages, page size and the data of list you want to inquire.
  */
 public class PageModel<T> {
 

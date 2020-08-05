@@ -3,13 +3,23 @@ package com.jenkins.server.model;
 /**
  * @author JenkinsZhang
  * @date 2020/8/3
+ * used for Course
  */
 public class SortModel {
 
+    /**
+     * your sorting course ID
+     */
     private String id;
 
+    /**
+     * your course sort before sorting
+     */
     private int oldSort;
 
+    /**
+     * your course sort after sorting
+     */
     private int newSort;
 
     public String getId() {

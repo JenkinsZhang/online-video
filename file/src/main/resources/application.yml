@@ -20,4 +20,8 @@ eureka:
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
 
+file:
+  dest: /Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Saved_Files/
+  url: http://localhost:9000/file/f/
+
 

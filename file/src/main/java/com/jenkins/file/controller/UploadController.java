@@ -4,6 +4,10 @@ import com.jenkins.server.model.ResponseModel;
 import com.jenkins.server.utils.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,10 +23,16 @@ import java.io.IOException;
 
 @RequestMapping("/admin")
 @RestController
+@Component
 public class UploadController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UploadController.class);
 
+    @Value("${file.dest}")
+    private String FILE_DEST;
+
+    @Value("${file.url}")
+    private String FILE_URL;
 
     @RequestMapping("/upload")
     public ResponseModel upload(@RequestParam("file")MultipartFile file) throws IOException {
@@ -32,11 +42,13 @@ public class UploadController {
 
         String filename = file.getOriginalFilename();
         String key = UuidUtil.getShortUuid();
-        String dest = "/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Saved_Files/avatars/" + key+ "_"+filename;
+        String dest = FILE_DEST + "/avatars/" + key+ "_"+filename;
+        System.out.println(dest);
         File fileDest = new File(dest);
         file.transferTo(fileDest);
-
-        return new ResponseModel();
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setContent( FILE_URL +"/avatars/"+key+"_"+filename);
+        return responseModel;
     }
 
 }
