@@ -1,12 +1,10 @@
-package com.jenkins.file.controller;
+package com.jenkins.file.controller.admin;
 
 import com.jenkins.server.model.ResponseModel;
 import com.jenkins.server.utils.UuidUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +19,7 @@ import java.io.IOException;
  * @date 2020/8/4
  */
 
-@RequestMapping("/admin")
+@RequestMapping("/admin/file")
 @RestController
 @Component
 public class UploadController {
@@ -42,12 +40,12 @@ public class UploadController {
 
         String filename = file.getOriginalFilename();
         String key = UuidUtil.getShortUuid();
-        String dest = FILE_DEST + "/avatars/" + key+ "_"+filename;
+        String dest = FILE_DEST + "teacher/avatars/" + key+ "_"+filename;
         System.out.println(dest);
         File fileDest = new File(dest);
         file.transferTo(fileDest);
         ResponseModel responseModel = new ResponseModel();
-        responseModel.setContent( FILE_URL +"/avatars/"+key+"_"+filename);
+        responseModel.setContent( FILE_URL +"teacher/avatars/"+key+"_"+filename);
         return responseModel;
     }
 

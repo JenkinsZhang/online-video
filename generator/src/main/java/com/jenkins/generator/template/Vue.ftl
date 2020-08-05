@@ -133,7 +133,7 @@
         methods: {
             list(page) {
                 this.axios({
-                    url: "http://localhost:9000/business/admin/${entity}/list",
+                    url: "http://localhost:9000/${module}/admin/${entity}/list",
                     data: {
                         page: page,
                         pageSize: this.$refs.pagination.size
@@ -177,7 +177,7 @@
 
                 // console.log(_this.${entity});
                 this.axios({
-                    url: "http://localhost:9000/business/admin/${entity}/save",
+                    url: "http://localhost:9000/${module}/admin/${entity}/save",
                     data: _this.${entity},
                 method: "POST"
             }).then((response) => {
@@ -198,7 +198,7 @@
                 console.log(_this.${entity});
                 Confirm.show("You won't be able to revert this deletion", () => {
                         this.axios({
-                            url: "http://localhost:9000/business/admin/${entity}/delete/" + id,
+                            url: "http://localhost:9000/${module}/admin/${entity}/delete/" + id,
                             method: "DELETE"
                         }).then((response) => {
                             // console.log(response);

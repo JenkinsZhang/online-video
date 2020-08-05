@@ -20,11 +20,11 @@ import java.util.*;
  */
 public class GeneratorApplication {
 
-    static String Module= "business";
+    static String Module= "file";
 
     static String toServicePath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/server/src/main/java/com/jenkins/server/service/" ;
     static String toModelPath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/server/src/main/java/com/jenkins/server/model/" ;
-    static String toControllerPath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/business/src/main/java/com/jenkins/"+Module+"/controller/admin/" ;
+    static String toControllerPath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/"+Module+"/src/main/java/com/jenkins/"+Module+"/controller/admin/" ;
     static String toVuePath = "/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/admin/src/views/admin/";
     static String sqlGeneratorXmlPath = "/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/server/src/main/resources/generator/generatorConfig.xml";
 
@@ -53,16 +53,16 @@ public class GeneratorApplication {
         map.put("fieldList",fieldList);
         map.put("typeSet",typeSet);
         //Services
-//        TemplateUtil.init("Service.ftl");
-//        TemplateUtil.generate(toServicePath+entity+"Service.java",map);
+        TemplateUtil.init("Service.ftl");
+        TemplateUtil.generate(toServicePath+entity+"Service.java",map);
 
         //Controller
-//        TemplateUtil.init("Controller.ftl");
-//        TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
+        TemplateUtil.init("Controller.ftl");
+        TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
 
         //Model
-//        TemplateUtil.init("Model.ftl");
-//        TemplateUtil.generate(toModelPath+entity+"Model.java",map);
+        TemplateUtil.init("Model.ftl");
+        TemplateUtil.generate(toModelPath+entity+"Model.java",map);
 
         //Vue
         TemplateUtil.init("Vue.ftl");
