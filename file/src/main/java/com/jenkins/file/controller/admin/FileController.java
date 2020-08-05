@@ -48,11 +48,4 @@ public class FileController {
         return responseModel;
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseModel delete(@PathVariable("id") String id)
-    {
-        fileService.delete(id);
-        ResponseModel responseModel= new ResponseModel();
-        return responseModel;
-    }
 }

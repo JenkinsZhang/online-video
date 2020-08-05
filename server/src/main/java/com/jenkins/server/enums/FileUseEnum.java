@@ -33,4 +33,13 @@ public enum FileUseEnum {
     public void setDesc(String desc) {
         this.desc = desc;
     }
+    public static FileUseEnum getByCode(String code){
+        for(FileUseEnum e: FileUseEnum.values()){
+            if(code.equals(e.getCode())){
+                return e;
+            }
+        }
+        return  null;
+    }
+
 }

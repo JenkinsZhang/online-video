@@ -48,7 +48,7 @@ public class FileService {
 
     }
 
-    public void save(FileModel fileModel)
+    public FileModel save(FileModel fileModel)
     {
         if(StringUtils.isEmpty(fileModel.getId()))
         {
@@ -57,6 +57,7 @@ public class FileService {
         else{
             update(fileModel);
         }
+        return fileModel;
     }
 
     public void update(FileModel fileModel)
