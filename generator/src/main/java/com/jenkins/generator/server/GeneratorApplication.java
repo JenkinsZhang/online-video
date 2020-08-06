@@ -20,7 +20,7 @@ import java.util.*;
  */
 public class GeneratorApplication {
 
-    static String Module= "file";
+    static String Module= "business";
 
     static String toServicePath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/server/src/main/java/com/jenkins/server/service/" ;
     static String toModelPath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/server/src/main/java/com/jenkins/server/model/" ;
@@ -46,9 +46,10 @@ public class GeneratorApplication {
         for (Field field : fieldList) {
             typeSet.add(field.getJavaType());
         }
+        String lowerEntity = entity.substring(0,1).toLowerCase() + entity.substring(1);
         Map<String,Object> map = new HashMap<>();
         map.put("Entity",entity);
-        map.put("entity",entity.toLowerCase());
+        map.put("entity",lowerEntity);
         map.put("module",module);
         map.put("fieldList",fieldList);
         map.put("typeSet",typeSet);
@@ -65,7 +66,7 @@ public class GeneratorApplication {
         TemplateUtil.generate(toModelPath+entity+"Model.java",map);
 
         //Vue
-        TemplateUtil.init("Vue.ftl");
-        TemplateUtil.generate(toVuePath+entity+".vue",map);
+//        TemplateUtil.init("Vue.ftl");
+//        TemplateUtil.generate(toVuePath+entity+".vue",map);
     }
 }
