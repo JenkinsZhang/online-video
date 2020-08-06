@@ -56,12 +56,13 @@ public class UploadController {
         String path = dir + File.separator + UuidUtil.getShortUuid() +"." + suffix;
         file.transferTo(new File(FILE_DEST + path));
         FileModel fileModel = new FileModel();
-        fileModel.setPath(FILE_URL + path);
+        fileModel.setPath(path);
         fileModel.setName(filename);
         fileModel.setUse(use);
         fileModel.setSize(Math.toIntExact(file.getSize()));
         fileModel.setSuffix(suffix);
         fileService.save(fileModel);
+        fileModel.setPath(FILE_URL + path);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(fileModel);
         return responseModel;
