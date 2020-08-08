@@ -11,6 +11,7 @@ import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -45,12 +46,15 @@ public class FileService {
 
     public FileModel save(FileModel fileModel)
     {
-        if(StringUtils.isEmpty(fileModel.getId()))
+        File file = selectByKey(fileModel);
+        if(file == null)
         {
             insert(fileModel);
         }
-        else{
-            update(fileModel);
+        else {
+            file.setShardIndex(fileModel.getShardIndex());
+            FileModel copy = CopyUtil.copy(file, FileModel.class);
+            update(copy);
         }
         return fileModel;
     }
@@ -77,5 +81,18 @@ public class FileService {
     public void delete(String id)
     {
         fileMapper.deleteByPrimaryKey(id);
+    }
+
+    public File selectByKey(FileModel fileModel)
+    {
+        String key = fileModel.getKey();
+        FileExample fileExample  = new FileExample();
+        fileExample.createCriteria().andKeyEqualTo(key);
+        List<File> files = fileMapper.selectByExample(fileExample);
+        if(CollectionUtils.isEmpty(files))
+        {
+            return null;
+        }
+        return files.get(0);
     }
 }

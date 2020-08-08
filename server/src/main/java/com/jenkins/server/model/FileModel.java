@@ -72,6 +72,16 @@ public class FileModel {
     */
     private String vod;
 
+    private String shard;
+
+    public String getShard() {
+        return shard;
+    }
+
+    public void setShard(String shard) {
+        this.shard = shard;
+    }
+
     public String getId() {
         return id;
     }
@@ -179,24 +189,22 @@ public class FileModel {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-            sb.append(", id=").append(id);
-            sb.append(", path=").append(path);
-            sb.append(", name=").append(name);
-            sb.append(", suffix=").append(suffix);
-            sb.append(", size=").append(size);
-            sb.append(", use=").append(use);
-            sb.append(", createdAt=").append(createdAt);
-            sb.append(", updatedAt=").append(updatedAt);
-            sb.append(", shardIndex=").append(shardIndex);
-            sb.append(", shardSize=").append(shardSize);
-            sb.append(", shardTotal=").append(shardTotal);
-            sb.append(", key=").append(key);
-            sb.append(", vod=").append(vod);
-        sb.append("]");
+        final StringBuffer sb = new StringBuffer("FileModel{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", path='").append(path).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", suffix='").append(suffix).append('\'');
+        sb.append(", size=").append(size);
+        sb.append(", use='").append(use).append('\'');
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", shardIndex=").append(shardIndex);
+        sb.append(", shardSize=").append(shardSize);
+        sb.append(", shardTotal=").append(shardTotal);
+        sb.append(", key='").append(key).append('\'');
+        sb.append(", vod='").append(vod).append('\'');
+        sb.append(", shard='").append(shard).append('\'');
+        sb.append('}');
         return sb.toString();
     }
 

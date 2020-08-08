@@ -96,7 +96,7 @@ public class LogAspect {
         PropertyPreFilters.MySimplePropertyPreFilter mySimplePropertyPreFilter = filters.addFilter(exclude);
         mySimplePropertyPreFilter.addExcludes(exclude);
 
-        LOG.info("Requesting Parameters: {}",JSONObject.toJSONString(arguments));
+        LOG.info("Requesting Parameters: {}",JSONObject.toJSONString(arguments,mySimplePropertyPreFilter));
     }
 
 
@@ -109,7 +109,7 @@ public class LogAspect {
         PropertyPreFilters.MySimplePropertyPreFilter mySimplePropertyPreFilter = filters.addFilter(excludes);
         mySimplePropertyPreFilter.addExcludes(excludes);
 
-        LOG.info("Returning result {}",JSONObject.toJSONString(proceed));
+        LOG.info("Returning result {}",JSONObject.toJSONString(proceed,mySimplePropertyPreFilter));
         LOG.info("------------------------------Finished. Using Time:【{} ms】------------------------------",System.currentTimeMillis()-startTime);
         return proceed;
     }
