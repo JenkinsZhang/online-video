@@ -54,41 +54,62 @@ public class UploadController {
         FileUseEnum fileUseEnum = FileUseEnum.getByCode(use);
         assert fileUseEnum != null;
         String dir = fileUseEnum.getDesc().toLowerCase();
-        File fullDir = new File(FILE_DEST  +dir);
-        if(!fullDir.exists())
-        {
+        File fullDir = new File(FILE_DEST + dir);
+        if (!fullDir.exists()) {
             fullDir.mkdir();
         }
-        String path = dir + File.separator + key +"." + suffix + "." + fileModel.getShardIndex();
-
+        String localPath =
+                new StringBuilder("")
+                .append(dir)
+                .append(File.separator)
+                .append(key).append(".")
+                .append(suffix)
+                .toString();
+        String filePath =
+                new StringBuilder(localPath)
+                .append(".")
+                .append(fileModel.getShardIndex())
+                .toString();
         MultipartFile multipartFile = Base64ToMultipartFile.base64ToMultipart(fileModel.getShard());
-        multipartFile.transferTo(new File(FILE_DEST + path));
-        fileModel.setPath(path);
+        multipartFile.transferTo(new File(FILE_DEST + filePath));
+        fileModel.setPath(localPath);
         fileService.save(fileModel);
-        fileModel.setPath(FILE_URL + path);
+        fileModel.setPath(FILE_URL + localPath);
+        if(fileModel.getShardIndex().equals(fileModel.getShardTotal()))
+        {
+            merge(fileModel);
+        }
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(fileModel);
         return responseModel;
     }
 
-    @RequestMapping("/merge")
-    public ResponseModel merge() throws IOException
-    {
-        File inputFile1 = new File("xxxx");
-        FileInputStream inputStream = new FileInputStream(inputFile1);
+    public void merge(FileModel fileModel) throws IOException {
+        LOG.info("Start merging shards...");
+        String path = fileModel.getPath().replace(FILE_URL,"");
+        path = FILE_DEST + path;
+        FileOutputStream fileOutputStream = new FileOutputStream(new File(path),true);
         int len;
-        File outputFile = new File("xxxx");
-        FileOutputStream outputStream = new FileOutputStream(outputFile,true);
         byte[] bytes = new byte[10*1024*1024];
-        while((len=inputStream.read(bytes)) != -1)
+        for(int i = 0 ; i < fileModel.getShardTotal();i++)
         {
-            outputStream.write(bytes,0,len);
-            outputStream.flush();
+            FileInputStream fileInputStream = new FileInputStream(new File(path+"."+(i+1)));
+            while((len = fileInputStream.read(bytes)) !=-1)
+            {
+                fileOutputStream.write(bytes,0,len);
+            }
         }
-
-        ResponseModel responseModel = new ResponseModel();
-        return responseModel;
-
+        fileOutputStream.flush();
+        LOG.info("Merging completed!");
+        LOG.info("Start deleting...");
+        System.gc();
+        for(int i =0 ; i < fileModel.getShardTotal();i++)
+        {
+            File file = new File(path+"."+(i+1));
+            boolean delete = file.delete();
+            LOG.info("Deleting success or not? {}", delete ? "Yes" : "No");
+        }
+        LOG.info("Deleting completed!");
     }
 
 }
