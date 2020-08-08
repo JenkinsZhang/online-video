@@ -34,15 +34,10 @@ public class FileService {
     {
         PageHelper.startPage(pageModel.getPage(),pageModel.getPageSize());
         FileExample fileExample = new FileExample();
+        fileExample.setOrderByClause("created_at desc");
         List<File> fileList = fileMapper.selectByExample(fileExample);
         PageInfo<File> pageInfo = new PageInfo<>(fileList);
         pageModel.setTotal(pageInfo.getTotal());
-//        List<FileModel> fileModelList = new ArrayList<>();
-//        for (File file} : fileList) {
-//            FileModel fileModel = new FileModel();
-//            BeanUtils.copyProperties(file},fileModel);
-//            fileModelList.add(fileModel);
-//        }
         List<FileModel> fileModelList = CopyUtil.copyList(fileList, FileModel.class);
         pageModel.setList(fileModelList);
 
