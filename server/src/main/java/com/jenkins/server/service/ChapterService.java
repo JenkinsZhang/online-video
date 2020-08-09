@@ -98,18 +98,18 @@ public class ChapterService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(String id)
+    public void delete(String chapterId)
     {
-        deleteChildrenSections(id);
-        chapterMapper.deleteByPrimaryKey(id);
+        deleteChildrenSections(chapterId);
+        chapterMapper.deleteByPrimaryKey(chapterId);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deleteChildrenSections(String id)
+    public void deleteChildrenSections(String chapterId)
     {
-        Chapter chapter = chapterMapper.selectByPrimaryKey(id);
+        Chapter chapter = chapterMapper.selectByPrimaryKey(chapterId);
         String courseId = chapter.getCourseId();
-        List<Section> sections = sectionService.sectionList(courseId, id);
+        List<Section> sections = sectionService.sectionList(courseId, chapterId);
         for (Section section : sections) {
             String sectionId = section.getId();
             sectionService.delete(sectionId);

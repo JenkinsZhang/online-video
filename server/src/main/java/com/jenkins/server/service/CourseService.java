@@ -106,9 +106,9 @@ public class CourseService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deleteChildrenChapters(String id)
+    public void deleteChildrenChapters(String courseId)
     {
-        List<Chapter> chapters = chapterService.chapterList(id);
+        List<Chapter> chapters = chapterService.chapterList(courseId);
         for (Chapter chapter : chapters) {
             chapterService.delete(chapter.getId());
         }

@@ -50,15 +50,10 @@ public class SectionService {
         {
             criteria.andCourseIdEqualTo(sectionPageModel.getCourseId());
         }
+        sectionExample.setOrderByClause("sort asc");
         List<Section> sectionList = sectionMapper.selectByExample(sectionExample);
         PageInfo<Section> pageInfo = new PageInfo<>(sectionList);
         sectionPageModel.setTotal(pageInfo.getTotal());
-//        List<SectionModel> sectionModelList = new ArrayList<>();
-//        for (Section section} : sectionList) {
-//            SectionModel sectionModel = new SectionModel();
-//            BeanUtils.copyProperties(section},sectionModel);
-//            sectionModelList.add(sectionModel);
-//        }
         List<SectionModel> sectionModelList = CopyUtil.copyList(sectionList, SectionModel.class);
         sectionPageModel.setList(sectionModelList);
 
