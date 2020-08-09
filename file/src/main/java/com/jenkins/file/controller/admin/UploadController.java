@@ -7,15 +7,13 @@ import com.jenkins.server.model.ResponseModel;
 import com.jenkins.server.service.FileService;
 import com.jenkins.server.utils.Base64ToMultipartFile;
 import com.jenkins.server.utils.UuidUtil;
+import org.apache.ibatis.annotations.Param;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -84,6 +82,17 @@ public class UploadController {
         return responseModel;
     }
 
+    @GetMapping("/check/{key}")
+    public ResponseModel checkFile(@PathVariable("key") String key){
+        FileModel check = fileService.check(key);
+        ResponseModel responseModel = new ResponseModel();
+        if (check != null)
+        {
+            check.setPath(FILE_URL + check.getPath());
+        }
+        responseModel.setContent(check);
+        return responseModel;
+    }
     public void merge(FileModel fileModel) throws IOException {
         LOG.info("Start merging shards...");
         String path = fileModel.getPath().replace(FILE_URL,"");
@@ -103,6 +112,13 @@ public class UploadController {
         LOG.info("Merging completed!");
         LOG.info("Start deleting...");
         System.gc();
+        try{
+            Thread.sleep(100);
+        }catch (Exception e )
+        {
+            e.printStackTrace();
+        }
+
         for(int i =0 ; i < fileModel.getShardTotal();i++)
         {
             File file = new File(path+"."+(i+1));

@@ -95,4 +95,12 @@ public class FileService {
         }
         return files.get(0);
     }
+
+    public FileModel check(String key)
+    {
+        FileModel fileModel = new FileModel();
+        fileModel.setKey(key);
+        File file = selectByKey(fileModel);
+        return CopyUtil.copy(file,FileModel.class);
+    }
 }
