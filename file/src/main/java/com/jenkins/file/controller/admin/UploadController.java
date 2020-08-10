@@ -28,7 +28,6 @@ import java.io.IOException;
 
 @RequestMapping("/admin/file")
 @RestController
-@Component
 public class UploadController {
 
     private static final Logger LOG = LoggerFactory.getLogger(UploadController.class);
@@ -41,6 +40,9 @@ public class UploadController {
 
     @Value("${file.url}")
     private String FILE_URL;
+
+    @Value("${oss.url}")
+    private String url;
 
     @RequestMapping("/upload")
     public ResponseModel upload(@RequestBody FileModel fileModel) throws IOException {
