@@ -23,6 +23,26 @@ public class UserModel {
     */
     private String password;
 
+    private String imageCode;
+
+    private String imageToken;
+
+    public String getImageCode() {
+        return imageCode;
+    }
+
+    public void setImageCode(String imageCode) {
+        this.imageCode = imageCode;
+    }
+
+    public String getImageToken() {
+        return imageToken;
+    }
+
+    public void setImageToken(String imageToken) {
+        this.imageToken = imageToken;
+    }
+
     public String getId() {
         return id;
     }
@@ -58,15 +78,14 @@ public class UserModel {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-            sb.append(", id=").append(id);
-            sb.append(", loginName=").append(loginName);
-            sb.append(", name=").append(name);
-            sb.append(", password=").append(password);
-        sb.append("]");
+        final StringBuffer sb = new StringBuffer("UserModel{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", loginName='").append(loginName).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", imageCode='").append(imageCode).append('\'');
+        sb.append(", imageToken='").append(imageToken).append('\'');
+        sb.append('}');
         return sb.toString();
     }
 

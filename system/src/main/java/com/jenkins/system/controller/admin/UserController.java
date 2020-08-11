@@ -8,6 +8,7 @@ import com.jenkins.server.service.UserService;
 import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -71,10 +72,27 @@ public class UserController {
     @PostMapping("/login")
     public ResponseModel login(@RequestBody UserModel userModel, HttpServletRequest request)
     {
+        ResponseModel responseModel = new ResponseModel();
+        String imageCode = userModel.getImageCode();
+        String imageToken = userModel.getImageToken();
+        String imageCodeStored = (String) request.getSession().getAttribute(imageToken);
+        if(StringUtils.isEmpty(imageCodeStored)){
+            responseModel.setSuccess(false);
+            responseModel.setMsg("Captcha code expired!");
+            return responseModel;
+        }
+        if(!imageCodeStored.toLowerCase().equals(imageCode.toLowerCase())){
+            responseModel.setSuccess(false);
+            responseModel.setMsg("Wrong captcha code!");
+            return responseModel;
+        }else {
+            request.getSession().removeAttribute(imageToken);
+        }
+
         userModel.setPassword(DigestUtils.md5DigestAsHex(userModel.getPassword().getBytes()));
         LoginModel login = userService.login(userModel);
         request.setAttribute("loginUser",login);
-        ResponseModel responseModel = new ResponseModel();
+
         responseModel.setContent(login);
         return responseModel;
     }
