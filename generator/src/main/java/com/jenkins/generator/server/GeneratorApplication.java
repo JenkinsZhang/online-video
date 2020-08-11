@@ -20,7 +20,7 @@ import java.util.*;
  */
 public class GeneratorApplication {
 
-    static String Module= "business";
+    static String Module= "system";
 
     static String toServicePath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/server/src/main/java/com/jenkins/server/service/" ;
     static String toModelPath="/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Services/online-video/server/src/main/java/com/jenkins/server/model/" ;
@@ -66,7 +66,7 @@ public class GeneratorApplication {
         TemplateUtil.generate(toModelPath+entity+"Model.java",map);
 
         //Vue
-//        TemplateUtil.init("Vue.ftl");
-//        TemplateUtil.generate(toVuePath+entity+".vue",map);
+        TemplateUtil.init("Vue.ftl");
+        TemplateUtil.generate(toVuePath+entity+".vue",map);
     }
 }

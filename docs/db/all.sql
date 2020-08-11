@@ -187,3 +187,131 @@ alter table `file` add column (`shard_total` int comment 'shard total');
 alter table `file` add column (`key` varchar(32) comment 'file key');
 alter table `file` add unique key key_unique (`key`);
 alter table `file` add column (`vod` char(32) comment 'vod|Aliyun vod');
+
+
+drop table if exists `user`;
+create table `user` (
+                        `id` char(8) not null default '' comment 'id',
+                        `login_name` varchar(50) not null comment 'login Name',
+                        `name` varchar(50) comment 'name',
+                        `password` char(32) not null comment 'password',
+                        primary key (`id`),
+                        unique key `login_name_unique` (`login_name`)
+) engine=innodb default charset=utf8mb4 comment='user';
+
+# test
+insert into `user` (id, login_name, name, password) values ('10000000', 'test', 'test', 'e70e2222a9d67c4f2eae107533359aa4');
+
+-- resource
+drop table if exists `resource`;
+create table `resource` (
+                            `id` char(6) not null default '' comment 'id',
+                            `name` varchar(100) not null comment 'name|menu or button',
+                            `page` varchar(50) null comment 'page|route',
+                            `request` varchar(200) null comment 'request|interface',
+                            `parent` char(6) comment 'parent id',
+                            primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='resource';
+
+insert into `resource` values ('01', 'system management', null, null, null);
+insert into `resource` values ('0101', 'user management', '/system/user', null, '01');
+insert into `resource` values ('010101', 'save', null, '["/system/admin/user/list", "/system/admin/user/save"]', '0101');
+insert into `resource` values ('010102', 'delete', null, '["/system/admin/user/delete"]', '0101');
+insert into `resource` values ('010103', 'restore password', null, '["/system/admin/user/save-password"]', '0101');
+insert into `resource` values ('0102', 'resource management', '/system/resource', null, '01');
+insert into `resource` values ('010201', 'save/show', null, '["/system/admin/resource"]', '0102');
+insert into `resource` values ('0103', 'role management', '/system/role', null, '01');
+insert into `resource` values ('010301', 'role/authority management', null, '["/system/admin/role"]', '0103');
+
+drop table if exists `role`;
+create table `role` (
+                        `id` char(8) not null default '' comment 'id',
+                        `name` varchar(50) not null comment 'role',
+                        `desc` varchar(100) not null comment 'describe',
+                        primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='role';
+
+insert into `role` values ('00000000', 'system admin', 'user management、user role');
+insert into `role` values ('00000001', 'develop', 'maintain resources');
+insert into `role` values ('00000002', 'business', 'business management');
+
+drop table if exists `role_resource`;
+create table `role_resource` (
+                                 `id` char(8) not null default '' comment 'id',
+                                 `role_id` char(8) not null comment 'role|id',
+                                 `resource_id` char(6) not null comment 'resouce|id',
+                                 primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='role_resource';
+
+insert into `role_resource` values ('00000000', '00000000', '01');
+insert into `role_resource` values ('00000001', '00000000', '0101');
+insert into `role_resource` values ('00000002', '00000000', '010101');
+insert into `role_resource` values ('00000003', '00000000', '010102');
+insert into `role_resource` values ('00000004', '00000000', '010103');
+insert into `role_resource` values ('00000005', '00000000', '0102');
+insert into `role_resource` values ('00000006', '00000000', '010201');
+insert into `role_resource` values ('00000007', '00000000', '0103');
+insert into `role_resource` values ('00000008', '00000000', '010301');
+
+drop table if exists `role_user`;
+create table `role_user` (
+                             `id` char(8) not null default '' comment 'id',
+                             `role_id` char(8) not null comment 'role|id',
+                             `user_id` char(8) not null comment 'user|id',
+                             primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='role_user';
+
+insert into `role_user` values ('00000000', '00000000', '10000000');
+
+-- member
+drop table if exists `member`;
+create table `member` (
+                          `id` char(8) not null default '' comment 'id',
+                          `mobile` varchar(11) not null comment 'phone',
+                          `password` char(32) not null comment 'password',
+                          `name` varchar(50) comment 'nickname',
+                          `photo` varchar(200) comment 'avatar url',
+                          `register_time` datetime(3) comment 'registration time',
+                          primary key (`id`),
+                          unique key `mobile_unique` (`mobile`)
+) engine=innodb default charset=utf8mb4 comment='member';
+
+# initialize test/test
+insert into `member` (id, mobile, password, name, photo, register_time) values ('00000000', '12345678901', 'e70e2222a9d67c4f2eae107533359aa4', 'test', null, now());
+
+# 短信验证码
+drop table if exists `sms`;
+create table `sms` (
+                       `id` char(8) not null default '' comment 'id',
+                       `mobile` varchar(50) not null comment '手机号',
+                       `code` char(6) not null comment '验证码',
+                       `use` char(1) not null comment '用途|枚举[SmsUseEnum]：REGISTER("R", "注册"), FORGET("F", "忘记密码")',
+                       `at` datetime(3) not null comment '生成时间',
+                       `status` char(1) not null comment '用途|枚举[SmsStatusEnum]：USED("U", "已使用"), NOT_USED("N", "未使用")',
+                       primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='短信验证码';
+
+insert into `sms` (id, mobile, code, `use`, at, status) values ('00000000', '12345678901', '123456', 'R', now(), 'N');
+
+# 会员课程报名
+drop table if exists `member_course`;
+create table `member_course` (
+                                 `id` char(8) not null default '' comment 'id',
+                                 `member_id` char(8) not null comment '会员id',
+                                 `course_id` char(8) not null comment '课程id',
+                                 `at` datetime(3) not null comment '报名时间',
+                                 primary key (`id`),
+                                 unique key `member_course_unique` (`member_id`, `course_id`)
+) engine=innodb default charset=utf8mb4 comment='会员课程报名';
+
+# ---------------------- 测试
+
+drop table if exists `test`;
+create table `test` (
+                        `id` char(8) not null default '' comment 'id',
+                        `name` varchar(50) comment '名称',
+                        primary key (`id`)
+) engine=innodb default charset=utf8mb4 comment='测试';
+
+insert into `test` (id, name) values (1, '测试');
+insert into `test` (id, name) values (2, '测试2');
