@@ -7,8 +7,9 @@ package com.jenkins.server.exception;
 public enum BusinessCode {
 
     //User login name exists
-    USER_LOGIN_NAME_EXISTS("Login name already exists!");
+    USER_LOGIN_NAME_EXISTS("Login name already exists!"),
 
+    LOGIN_ERROR("Wrong login name or password!");
     private String desc;
 
     BusinessCode(String desc) {

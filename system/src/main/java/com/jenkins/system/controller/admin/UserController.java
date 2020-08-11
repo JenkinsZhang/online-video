@@ -1,5 +1,6 @@
 package com.jenkins.system.controller.admin;
 
+import com.jenkins.server.model.LoginModel;
 import com.jenkins.server.model.UserModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.ResponseModel;
@@ -62,6 +63,16 @@ public class UserController {
     {
         userService.delete(id);
         ResponseModel responseModel= new ResponseModel();
+        return responseModel;
+    }
+
+    @PostMapping("/login")
+    public ResponseModel login(@RequestBody UserModel userModel)
+    {
+        userModel.setPassword(DigestUtils.md5DigestAsHex(userModel.getPassword().getBytes()));
+        LoginModel login = userService.login(userModel);
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setContent(login);
         return responseModel;
     }
 }

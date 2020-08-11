@@ -7,10 +7,13 @@ import com.jenkins.server.entity.UserExample;
 import com.jenkins.server.exception.BusinessCode;
 import com.jenkins.server.exception.BusinessException;
 import com.jenkins.server.mapper.UserMapper;
+import com.jenkins.server.model.LoginModel;
 import com.jenkins.server.model.UserModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -26,6 +29,7 @@ import java.util.List;
 @Service
 public class UserService {
 
+    private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
     private UserMapper userMapper;
 
     @Autowired
@@ -104,5 +108,22 @@ public class UserService {
         user.setId(userModel.getId());
         user.setPassword(userModel.getPassword());
         userMapper.updateByPrimaryKeySelective(user);
+    }
+
+    public LoginModel login(UserModel userModel){
+        String loginName = userModel.getLoginName();
+        User user = selectUserByLoginName(loginName);
+        if(user == null) {
+            LOG.error(BusinessCode.LOGIN_ERROR.getDesc());
+            throw new BusinessException(BusinessCode.LOGIN_ERROR);
+        }else {
+            if(userModel.getPassword().equals(user.getPassword()))
+            {
+                return CopyUtil.copy(user,LoginModel.class);
+            }else {
+                LOG.error(BusinessCode.LOGIN_ERROR.getDesc());
+                throw new BusinessException(BusinessCode.LOGIN_ERROR);
+            }
+        }
     }
 }
