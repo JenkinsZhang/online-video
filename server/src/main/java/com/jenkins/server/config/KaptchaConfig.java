@@ -9,7 +9,8 @@ import java.util.Properties;
 
 @Configuration
 public class KaptchaConfig {
-    @Bean
+
+    @Bean("getDefaultKaptcha")
     public DefaultKaptcha getDefaultKaptcha() {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         Properties properties = new Properties();
@@ -29,7 +30,7 @@ public class KaptchaConfig {
         return defaultKaptcha;
     }
 
-    @Bean
+    @Bean("getWebKaptcha")
     public DefaultKaptcha getWebKaptcha() {
         DefaultKaptcha defaultKaptcha = new DefaultKaptcha();
         Properties properties = new Properties();
@@ -48,4 +49,4 @@ public class KaptchaConfig {
         defaultKaptcha.setConfig(config);
         return defaultKaptcha;
     }
-} 
+}

@@ -38,13 +38,11 @@
         <dependency>
             <groupId>com.jenkins</groupId>
             <artifactId>server</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>
-            <groupId>com.jenkins</groupId>
-            <artifactId>server</artifactId>
+            <groupId>com.github.penggle</groupId>
+            <artifactId>kaptcha</artifactId>
         </dependency>
     </dependencies>
 
