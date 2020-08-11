@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author JenkinsZhang
  * @date 2020/7/7
@@ -67,12 +69,21 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseModel login(@RequestBody UserModel userModel)
+    public ResponseModel login(@RequestBody UserModel userModel, HttpServletRequest request)
     {
         userModel.setPassword(DigestUtils.md5DigestAsHex(userModel.getPassword().getBytes()));
         LoginModel login = userService.login(userModel);
+        request.setAttribute("loginUser",login);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(login);
+        return responseModel;
+    }
+
+    @PostMapping("/logout")
+    public ResponseModel login(HttpServletRequest request)
+    {
+        request.removeAttribute("loginUser");
+        ResponseModel responseModel = new ResponseModel();
         return responseModel;
     }
 }
