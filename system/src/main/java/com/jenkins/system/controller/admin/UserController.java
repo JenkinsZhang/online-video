@@ -6,6 +6,7 @@ import com.jenkins.server.model.ResponseModel;
 import com.jenkins.server.service.UserService;
 import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -40,12 +41,22 @@ public class UserController {
         ValidatorUtil.require(userModel.getLoginName(),"LoginName");
         ValidatorUtil.length(userModel.getLoginName(), 1, 50, "LoginName");
         ValidatorUtil.length(userModel.getName(), 1, 50, "Name");        ValidatorUtil.require(userModel.getPassword(),"Password");
+        userModel.setPassword(DigestUtils.md5DigestAsHex(userModel.getPassword().getBytes()));
         userService.save(userModel);
         ResponseModel responseModel = new ResponseModel();
         responseModel.setContent(userModel);
         return responseModel;
     }
 
+    @PostMapping("/save-password")
+    public ResponseModel savePassword(@RequestBody UserModel userModel){
+
+        userModel.setPassword(DigestUtils.md5DigestAsHex(userModel.getPassword().getBytes()));
+        userService.savePassword(userModel);
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setContent(userModel);
+        return responseModel;
+    }
     @DeleteMapping("/delete/{id}")
     public ResponseModel delete(@PathVariable("id") String id)
     {

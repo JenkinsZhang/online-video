@@ -65,8 +65,8 @@ public class UserService {
     public void update(UserModel userModel)
     {
         User copy = CopyUtil.copy(userModel, User.class);
-        Date now  = new Date();
-        this.userMapper.updateByPrimaryKey(copy);
+        copy.setPassword(null);
+        this.userMapper.updateByPrimaryKeySelective(copy);
     }
 
     public void insert(UserModel userModel)
@@ -99,4 +99,10 @@ public class UserService {
         return users.get(0);
     }
 
+    public void savePassword(UserModel userModel){
+        User user = new User();
+        user.setId(userModel.getId());
+        user.setPassword(userModel.getPassword());
+        userMapper.updateByPrimaryKeySelective(user);
+    }
 }
