@@ -12,16 +12,22 @@ spring:
           uri: lb://system
           predicates:
             - Path=/system/**
+          filters:
+            - name: LoginAdmin
         - id: business
 #          uri: http://localhost:9092
           uri: lb://business
           predicates:
             - Path=/business/**
+          filters:
+            - name: LoginAdmin
         - id: file
 #          uri: http://localhost:9093
           uri: lb://file
           predicates:
             - Path=/file/**
+          filters:
+            - name: LoginAdmin
 
 eureka:
   client:

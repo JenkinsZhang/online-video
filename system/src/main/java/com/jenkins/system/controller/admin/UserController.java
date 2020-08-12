@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author JenkinsZhang
@@ -99,11 +100,11 @@ public class UserController {
         }
 
         userModel.setPassword(DigestUtils.md5DigestAsHex(userModel.getPassword().getBytes()));
-        String shortUuid = UuidUtil.getShortUuid();
+        String token = UuidUtil.getShortUuid();
         LoginModel login = userService.login(userModel);
-        login.setToken(shortUuid);
+        login.setToken(token);
 //        request.setAttribute("loginUser",login);
-        redisTemplate.opsForValue().set(shortUuid, JSON.toJSONString(login));
+        redisTemplate.opsForValue().set(token, JSON.toJSONString(login),3600, TimeUnit.SECONDS);
         responseModel.setContent(login);
         return responseModel;
     }
