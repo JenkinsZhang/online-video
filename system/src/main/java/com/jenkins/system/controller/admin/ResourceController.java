@@ -8,6 +8,8 @@ import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @author JenkinsZhang
  * @date 2020/7/7
@@ -25,7 +27,7 @@ public class ResourceController {
         this.resourceService = resourceService;
     }
 
-    @PostMapping("/list")
+    @GetMapping("/list")
     public ResponseModel getResourceList (@RequestBody PageModel pageModel){
 
         resourceService.resourceList(pageModel);
@@ -35,16 +37,11 @@ public class ResourceController {
     }
 
     @PostMapping("/save")
-    public ResponseModel save(@RequestBody ResourceModel resourceModel)
+    public ResponseModel save(@RequestBody String resourceString)
     {
-        ValidatorUtil.require(resourceModel.getName(),"Name");
-        ValidatorUtil.length(resourceModel.getName(), 1, 100, "Name");
-        ValidatorUtil.length(resourceModel.getPage(), 1, 50, "Page");
-        ValidatorUtil.length(resourceModel.getRequest(), 1, 200, "Request");
-        resourceService.save(resourceModel);
-        ResponseModel responseModel = new ResponseModel();
-        responseModel.setContent(resourceModel);
-        return responseModel;
+        ValidatorUtil.require(resourceString,"id");
+        resourceService.saveJson(resourceString);
+        return new ResponseModel();
     }
 
     @DeleteMapping("/delete/{id}")
@@ -52,6 +49,14 @@ public class ResourceController {
     {
         resourceService.delete(id);
         ResponseModel responseModel= new ResponseModel();
+        return responseModel;
+    }
+
+    @GetMapping("/load-tree")
+    public ResponseModel loadTree(){
+        ResponseModel responseModel = new ResponseModel();
+        List<ResourceModel> resourceModels = resourceService.loadTree();
+        responseModel.setContent(resourceModels);
         return responseModel;
     }
 }
