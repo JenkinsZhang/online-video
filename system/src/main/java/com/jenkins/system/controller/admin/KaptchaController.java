@@ -3,6 +3,7 @@ package com.jenkins.system.controller.admin;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/admin/kaptcha")
@@ -24,6 +26,8 @@ public class KaptchaController {
     @Qualifier("getDefaultKaptcha")
     DefaultKaptcha defaultKaptcha;
 
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @GetMapping("/image-code/{imageCodeToken}")
     public void imageCode(@PathVariable(value = "imageCodeToken") String imageCodeToken, HttpServletRequest request, HttpServletResponse httpServletResponse) throws Exception{
@@ -32,9 +36,9 @@ public class KaptchaController {
             // generate kaptcha text;
             String createText = defaultKaptcha.createText();
 
-            //add token to session
-             request.getSession().setAttribute(imageCodeToken, createText);
-
+            //add token to redis
+//             request.getSession().setAttribute(imageCodeToken, createText);
+             redisTemplate.opsForValue().set(imageCodeToken,createText,300, TimeUnit.SECONDS);
             // add token to redis
 //            redisTemplate.opsForValue().set(imageCodeToken, createText, 300, TimeUnit.SECONDS);
 

@@ -4,6 +4,11 @@ spring:
     username: onlineVideo
     password: Qianqi971126
     driver-class-name: com.mysql.cj.jdbc.Driver
+  redis:
+    jedis:
+      pool:
+        max-active: 10
+        max-idle: 10
 
 mybatis:
   type-aliases-package: com.jenkins.server

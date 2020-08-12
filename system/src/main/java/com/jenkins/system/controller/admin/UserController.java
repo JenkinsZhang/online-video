@@ -1,17 +1,21 @@
 package com.jenkins.system.controller.admin;
 
+import com.alibaba.fastjson.JSON;
 import com.jenkins.server.model.LoginModel;
 import com.jenkins.server.model.UserModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.ResponseModel;
 import com.jenkins.server.service.UserService;
+import com.jenkins.server.utils.UuidUtil;
 import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 /**
  * @author JenkinsZhang
@@ -29,6 +33,9 @@ public class UserController {
     public UserController(UserService userService) {
         this.userService = userService;
     }
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     @PostMapping("/list")
     public ResponseModel getUserList (@RequestBody PageModel pageModel){
@@ -75,7 +82,8 @@ public class UserController {
         ResponseModel responseModel = new ResponseModel();
         String imageCode = userModel.getImageCode();
         String imageToken = userModel.getImageToken();
-        String imageCodeStored = (String) request.getSession().getAttribute(imageToken);
+//        String imageCodeStored = (String) request.getSession().getAttribute(imageToken);
+        String imageCodeStored = (String)redisTemplate.opsForValue().get(imageToken);
         if(StringUtils.isEmpty(imageCodeStored)){
             responseModel.setSuccess(false);
             responseModel.setMsg("Captcha code expired!");
@@ -86,21 +94,25 @@ public class UserController {
             responseModel.setMsg("Wrong captcha code!");
             return responseModel;
         }else {
-            request.getSession().removeAttribute(imageToken);
+//            request.getSession().removeAttribute(imageToken);
+            redisTemplate.delete(imageToken);
         }
 
         userModel.setPassword(DigestUtils.md5DigestAsHex(userModel.getPassword().getBytes()));
+        String shortUuid = UuidUtil.getShortUuid();
         LoginModel login = userService.login(userModel);
-        request.setAttribute("loginUser",login);
-
+        login.setToken(shortUuid);
+//        request.setAttribute("loginUser",login);
+        redisTemplate.opsForValue().set(shortUuid, JSON.toJSONString(login));
         responseModel.setContent(login);
         return responseModel;
     }
 
-    @PostMapping("/logout")
-    public ResponseModel login(HttpServletRequest request)
+    @GetMapping("/logout/{token}")
+    public ResponseModel login(HttpServletRequest request,@PathVariable("token") String token)
     {
-        request.removeAttribute("loginUser");
+//        request.removeAttribute("loginUser");
+        redisTemplate.delete(token);
         ResponseModel responseModel = new ResponseModel();
         return responseModel;
     }
