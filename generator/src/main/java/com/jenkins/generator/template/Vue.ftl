@@ -119,10 +119,10 @@
 </template>
 
 <script>
-    import Pagination from "../../components/Pagination";
+    import pagination from "../../components/pagination";
     export default {
         name: "${module}-${Entity}",
-        components: {Pagination},
+        components: {pagination},
         data() {
             return {
             ${entity}: {},
