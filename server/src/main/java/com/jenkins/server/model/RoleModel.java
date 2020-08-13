@@ -22,9 +22,18 @@ public class RoleModel {
 
     private List<String> resources;
 
+    private List<String> users;
 
     public String getId() {
         return id;
+    }
+
+    public List<String> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<String> users) {
+        this.users = users;
     }
 
     public void setId(String id) {
@@ -62,6 +71,7 @@ public class RoleModel {
         sb.append(", name='").append(name).append('\'');
         sb.append(", desc='").append(desc).append('\'');
         sb.append(", resources=").append(resources);
+        sb.append(", users=").append(users);
         sb.append('}');
         return sb.toString();
     }

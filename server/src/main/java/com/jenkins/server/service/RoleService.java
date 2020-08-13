@@ -2,15 +2,14 @@ package com.jenkins.server.service;
 import java.util.Date;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.jenkins.server.entity.Role;
-import com.jenkins.server.entity.RoleExample;
-import com.jenkins.server.entity.RoleResource;
-import com.jenkins.server.entity.RoleResourceExample;
+import com.jenkins.server.entity.*;
 import com.jenkins.server.mapper.RoleMapper;
 import com.jenkins.server.mapper.RoleResourceMapper;
+import com.jenkins.server.mapper.RoleUserMapper;
 import com.jenkins.server.model.RoleModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.RoleResourceModel;
+import com.jenkins.server.model.RoleUserModel;
 import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +36,12 @@ public class RoleService {
 
     @Autowired
     private  RoleResourceService resourceService;
+
+    @Autowired
+    private RoleUserMapper roleUserMapper;
+
+    @Autowired
+    private RoleUserService roleUserService;
 
     @Autowired
     public RoleService(RoleMapper roleMapper,RoleResourceMapper roleResourceMapper) {
@@ -70,10 +75,13 @@ public class RoleService {
             String insert = insert(roleModel);
             roleModel.setId(insert);
             resourceService.saveBatch(roleModel);
+            roleUserService.saveBatch(roleModel);
+
         }
         else{
             update(roleModel);
             resourceService.saveBatch(roleModel);
+            roleUserService.saveBatch(roleModel);
         }
     }
 
@@ -108,4 +116,10 @@ public class RoleService {
         return CopyUtil.copyList(roleResources,RoleResourceModel.class);
     }
 
+    public List<RoleUserModel> listUser(String roleId) {
+        RoleUserExample roleUserExample = new RoleUserExample();
+        roleUserExample.createCriteria().andRoleIdEqualTo(roleId);
+        List<RoleUser> roleUsers = roleUserMapper.selectByExample(roleUserExample);
+        return CopyUtil.copyList(roleUsers,RoleUserModel.class);
+    }
 }

@@ -12,6 +12,7 @@ import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -83,6 +84,9 @@ public class RoleResourceService {
 
     public void saveBatch(RoleModel roleModel){
         List<String> resources = roleModel.getResources();
+        if(CollectionUtils.isEmpty(resources)){
+            return;
+        }
         String roleId = roleModel.getId();
         RoleResourceExample roleResourceExample = new RoleResourceExample();
         roleResourceExample.createCriteria().andRoleIdEqualTo(roleId);

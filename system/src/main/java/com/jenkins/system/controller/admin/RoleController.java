@@ -1,9 +1,6 @@
 package com.jenkins.system.controller.admin;
 
-import com.jenkins.server.model.RoleModel;
-import com.jenkins.server.model.PageModel;
-import com.jenkins.server.model.ResponseModel;
-import com.jenkins.server.model.RoleResourceModel;
+import com.jenkins.server.model.*;
 import com.jenkins.server.service.RoleService;
 import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,5 +61,13 @@ public class RoleController {
         responseModel.setContent(roleResourceModels);
         return responseModel;
     }
-    
+
+
+    @GetMapping("/list-user/{roleId}")
+    public ResponseModel listUser(@PathVariable("roleId") String roleId){
+        ResponseModel responseModel = new ResponseModel();
+        List<RoleUserModel> roleUserModels = roleService.listUser(roleId);
+        responseModel.setContent(roleUserModels);
+        return responseModel;
+    }
 }
