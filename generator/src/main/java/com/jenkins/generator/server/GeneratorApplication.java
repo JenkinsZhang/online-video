@@ -66,7 +66,7 @@ public class GeneratorApplication {
         TemplateUtil.generate(toModelPath+entity+"Model.java",map);
 
         //Vue
-        TemplateUtil.init("Vue.ftl");
-        TemplateUtil.generate(toVuePath+entity+".vue",map);
+//        TemplateUtil.init("Vue.ftl");
+//        TemplateUtil.generate(toVuePath+entity+".vue",map);
     }
 }
