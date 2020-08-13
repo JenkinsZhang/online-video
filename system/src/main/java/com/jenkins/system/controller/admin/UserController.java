@@ -103,7 +103,7 @@ public class UserController {
         LoginModel login = userService.login(userModel);
         login.setToken(token);
 //        request.setAttribute("loginUser",login);
-        redisTemplate.opsForValue().set(token, JSON.toJSONString(login),3600, TimeUnit.SECONDS);
+        redisTemplate.opsForValue().set(token, JSON.toJSONString(login),10800, TimeUnit.SECONDS);
         responseModel.setContent(login);
         return responseModel;
     }
