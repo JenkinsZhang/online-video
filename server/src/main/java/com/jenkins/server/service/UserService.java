@@ -1,5 +1,7 @@
 package com.jenkins.server.service;
 import java.util.Date;
+
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jenkins.server.entity.User;
@@ -7,7 +9,9 @@ import com.jenkins.server.entity.UserExample;
 import com.jenkins.server.exception.BusinessCode;
 import com.jenkins.server.exception.BusinessException;
 import com.jenkins.server.mapper.UserMapper;
+import com.jenkins.server.mapper.my.MyRoleMapper;
 import com.jenkins.server.model.LoginModel;
+import com.jenkins.server.model.ResourceModel;
 import com.jenkins.server.model.UserModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.utils.CopyUtil;
@@ -20,6 +24,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -31,6 +36,10 @@ public class UserService {
 
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
     private UserMapper userMapper;
+
+    @Autowired
+    private MyRoleMapper myRoleMapper;
+
 
     @Autowired
     public UserService(UserMapper userMapper) {
@@ -119,11 +128,31 @@ public class UserService {
         }else {
             if(userModel.getPassword().equals(user.getPassword()))
             {
-                return CopyUtil.copy(user,LoginModel.class);
+                LoginModel loginModel = CopyUtil.copy(user, LoginModel.class);
+                setAuth(loginModel);
+                return loginModel;
             }else {
                 LOG.error(BusinessCode.LOGIN_ERROR.getDesc());
                 throw new BusinessException(BusinessCode.LOGIN_ERROR);
             }
         }
+    }
+
+    public void setAuth(LoginModel loginModel){
+        List<ResourceModel> userResource = myRoleMapper.getUserResource(loginModel.getId());
+        loginModel.setResources(userResource);
+
+        HashSet<String> requestSet = new HashSet<>();
+        if(!CollectionUtils.isEmpty(userResource)){
+            for (ResourceModel resourceModel : userResource) {
+                String request = resourceModel.getRequest();
+                List<String> requests = JSON.parseArray(request, String.class);
+                if(!CollectionUtils.isEmpty(requests)){
+                    requestSet.addAll(requests);
+                }
+
+            }
+        }
+        loginModel.setRequests(requestSet);
     }
 }

@@ -1,5 +1,8 @@
 package com.jenkins.gateway.filter;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +48,23 @@ public class LoginAdminGatewayFilter implements GatewayFilter,Ordered  {
             return exchange.getResponse().setComplete();
         }else {
             LOG.info("backend interceptor:" + token);
-            return chain.filter(exchange);
+
+            Boolean pass = false;
+            JSONObject jsonObject = JSON.parseObject(String.valueOf(loginUser));
+            JSONArray requests = jsonObject.getJSONArray("requests");
+            for (Object request : requests) {
+                String requestString = (String) request;
+                if(path.contains(requestString)){
+                    pass = true;
+                }
+            }
+            if(pass){
+                return chain.filter(exchange);
+            }
+            else {
+                exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                return exchange.getResponse().setComplete();
+            }
         }
 
     }

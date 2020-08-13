@@ -1,59 +1,167 @@
-[{
-  "id": "00", "name": "welcome", "page": "welcome"
-}, {
-  "id": "01", "name": "system management",
-  "children": [{
-    "id": "0101", "name": "user management", "page": "system/user",
+[
+  {
+    "id": "00",
+    "name": "welcome",
+    "page": "welcome"
+  },
+  {
+    "id": "01",
+    "name": "system management",
     "children": [
-      {"id": "010101", "name": "save", "request": ["/system/admin/user/list", "/system/admin/user/save"]},
-      {"id": "010102", "name": "delete", "request": ["/system/admin/user/delete"]},
-      {"id": "010103", "name": "save password", "request": ["/system/admin/user/save-password"]}
+      {
+        "id": "0101",
+        "name": "user management",
+        "page": "system/user",
+        "children": [
+          {
+            "id": "010101",
+            "name": "save",
+            "request": [
+              "/system/admin/user/list",
+              "/system/admin/user/save"
+            ]
+          },
+          {
+            "id": "010102",
+            "name": "delete",
+            "request": [
+              "/system/admin/user/delete"
+            ]
+          },
+          {
+            "id": "010103",
+            "name": "save password",
+            "request": [
+              "/system/admin/user/save-password"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "0102",
+        "name": "resource management",
+        "page": "system/resource",
+        "children": [
+          {
+            "id": "010201",
+            "name": "save/show",
+            "request": [
+              "/system/admin/resource"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "0103",
+        "name": "role management",
+        "page": "system/role",
+        "children": [
+          {
+            "id": "010301",
+            "name": "role/authorization management",
+            "request": [
+              "/system/admin/role"
+            ]
+          }
+        ]
+      }
     ]
-  }, {
-    "id": "0102", "name": "resource management", "page": "system/resource",
+  },
+  {
+    "id": "02",
+    "name": "business management",
     "children": [
-      {"id": "010201", "name": "save/show", "request": ["/system/admin/resource"]}
+      {
+        "id": "0201",
+        "name": "category management",
+        "page": "business/category",
+        "children": [
+          {
+            "id": "020101",
+            "name": "CRUD",
+            "request": [
+              "/business/admin/category"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "0202",
+        "name": "course management",
+        "page": "business/course",
+        "children": [
+          {
+            "id": "020201",
+            "name": "CRUD",
+            "request": [
+              "/business/admin/course",
+              "/business/admin/category/all"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "0203",
+        "name": "teacher management",
+        "page": "business/teacher",
+        "children": [
+          {
+            "id": "020301",
+            "name": "CRUD",
+            "request": [
+              "/business/admin/teacher"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "0204",
+        "name": "member management",
+        "page": "business/member",
+        "children": [
+          {
+            "id": "020401",
+            "name": "CRUD",
+            "request": [
+              "/business/admin/member"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "0205",
+        "name": "sms management",
+        "page": "business/sms",
+        "children": [
+          {
+            "id": "020501",
+            "name": "CRUD",
+            "request": [
+              "/business/admin/sms"
+            ]
+          }
+        ]
+      }
     ]
-  }, {
-    "id": "0103", "name": "role management", "page": "system/role",
+  },
+  {
+    "id": "03",
+    "name": "file management",
     "children": [
-      {"id": "010301", "name": "role/authorization management", "request": ["/system/admin/role"]}
+      {
+        "id": "0301",
+        "name": "file management",
+        "page": "file/file",
+        "children": [
+          {
+            "id": "030101",
+            "name": "file management",
+            "request": [
+              "/file/admin/file"
+            ]
+          }
+        ]
+      }
     ]
-  }]
-}, {
-  "id": "02", "name": "business management",
-  "children": [{
-    "id": "0201", "name": "category management", "page": "business/category",
-    "children": [
-      {"id": "020101", "name": "CRUD", "request": ["/business/admin/category"]}
-    ]
-  }, {
-    "id": "0202", "name": "course management", "page": "business/course",
-    "children": [
-      {"id": "020201", "name": "CRUD", "request": ["/business/admin/course", "/business/admin/category/all"]}
-    ]
-  }, {
-    "id": "0203", "name": "teacher management", "page": "business/teacher",
-    "children": [
-      {"id": "020301", "name": "CRUD", "request": ["/business/admin/teacher"]}
-    ]
-  }, {
-    "id": "0204", "name": "member management", "page": "business/member",
-    "children": [
-      {"id": "020401", "name": "CRUD", "request": ["/business/admin/member"]}
-    ]
-  }, {
-    "id": "0205", "name": "sms management", "page": "business/sms",
-    "children": [
-      {"id": "020501", "name": "CRUD", "request": ["/business/admin/sms"]}
-    ]
-  }]
-}, {
-  "id": "03", "name": "file management",
-  "children": [{
-    "id": "0301", "name": "file management", "page": "file/file",
-    "children": [
-      {"id": "030101", "name": "file management", "request": ["/file/admin/file"]}
-    ]
-  }]
-}]
+  }
+]

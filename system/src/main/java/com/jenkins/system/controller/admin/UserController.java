@@ -83,7 +83,6 @@ public class UserController {
         ResponseModel responseModel = new ResponseModel();
         String imageCode = userModel.getImageCode();
         String imageToken = userModel.getImageToken();
-//        String imageCodeStored = (String) request.getSession().getAttribute(imageToken);
         String imageCodeStored = (String)redisTemplate.opsForValue().get(imageToken);
         if(StringUtils.isEmpty(imageCodeStored)){
             responseModel.setSuccess(false);

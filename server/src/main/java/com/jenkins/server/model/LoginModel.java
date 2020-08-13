@@ -1,6 +1,9 @@
 package com.jenkins.server.model;
 
 
+import java.util.HashSet;
+import java.util.List;
+
 public class LoginModel {
 
     /**
@@ -22,6 +25,11 @@ public class LoginModel {
      * login token
      */
     private String token;
+
+    private List<ResourceModel> resources;
+
+    private HashSet<String> requests;
+
 
     public String getId() {
         return id;
@@ -55,6 +63,22 @@ public class LoginModel {
         this.token = token;
     }
 
+    public List<ResourceModel> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<ResourceModel> resources) {
+        this.resources = resources;
+    }
+
+    public HashSet<String> getRequests() {
+        return requests;
+    }
+
+    public void setRequests(HashSet<String> requests) {
+        this.requests = requests;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("LoginModel{");
@@ -62,6 +86,8 @@ public class LoginModel {
         sb.append(", loginName='").append(loginName).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", token='").append(token).append('\'');
+        sb.append(", resources=").append(resources);
+        sb.append(", requests=").append(requests);
         sb.append('}');
         return sb.toString();
     }
