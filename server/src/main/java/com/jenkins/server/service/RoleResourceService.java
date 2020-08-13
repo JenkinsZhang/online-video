@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.jenkins.server.entity.RoleResource;
 import com.jenkins.server.entity.RoleResourceExample;
 import com.jenkins.server.mapper.RoleResourceMapper;
+import com.jenkins.server.model.RoleModel;
 import com.jenkins.server.model.RoleResourceModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.utils.CopyUtil;
@@ -78,5 +79,19 @@ public class RoleResourceService {
     public void delete(String id)
     {
         roleResourceMapper.deleteByPrimaryKey(id);
+    }
+
+    public void saveBatch(RoleModel roleModel){
+        List<String> resources = roleModel.getResources();
+        String roleId = roleModel.getId();
+        RoleResourceExample roleResourceExample = new RoleResourceExample();
+        roleResourceExample.createCriteria().andRoleIdEqualTo(roleId);
+        roleResourceMapper.deleteByExample(roleResourceExample);
+        for (String resource : resources) {
+            RoleResourceModel roleResourceModel = new RoleResourceModel();
+            roleResourceModel.setRoleId(roleId);
+            roleResourceModel.setResourceId(resource);
+            insert(roleResourceModel);
+        }
     }
 }

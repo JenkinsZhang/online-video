@@ -1,6 +1,8 @@
 package com.jenkins.server.model;
 
 
+import java.util.List;
+
 public class RoleModel {
 
     /**
@@ -17,6 +19,9 @@ public class RoleModel {
     * describe
     */
     private String desc;
+
+    private List<String> resources;
+
 
     public String getId() {
         return id;
@@ -42,18 +47,22 @@ public class RoleModel {
         this.desc = desc;
     }
 
+    public List<String> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<String> resources) {
+        this.resources = resources;
+    }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-            sb.append(", id=").append(id);
-            sb.append(", name=").append(name);
-            sb.append(", desc=").append(desc);
-        sb.append("]");
+        final StringBuffer sb = new StringBuffer("RoleModel{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", desc='").append(desc).append('\'');
+        sb.append(", resources=").append(resources);
+        sb.append('}');
         return sb.toString();
     }
-
 }

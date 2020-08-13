@@ -4,13 +4,20 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jenkins.server.entity.Role;
 import com.jenkins.server.entity.RoleExample;
+import com.jenkins.server.entity.RoleResource;
+import com.jenkins.server.entity.RoleResourceExample;
 import com.jenkins.server.mapper.RoleMapper;
+import com.jenkins.server.mapper.RoleResourceMapper;
 import com.jenkins.server.model.RoleModel;
 import com.jenkins.server.model.PageModel;
+import com.jenkins.server.model.RoleResourceModel;
 import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -21,12 +28,19 @@ import java.util.List;
  * @date 2020/7/10
  */
 @Service
+@EnableTransactionManagement
 public class RoleService {
 
     private RoleMapper roleMapper;
 
+    private RoleResourceMapper roleResourceMapper;
+
     @Autowired
-    public RoleService(RoleMapper roleMapper) {
+    private  RoleResourceService resourceService;
+
+    @Autowired
+    public RoleService(RoleMapper roleMapper,RoleResourceMapper roleResourceMapper) {
+        this.roleResourceMapper = roleResourceMapper;
         this.roleMapper = roleMapper;
     }
 
@@ -48,14 +62,18 @@ public class RoleService {
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void save(RoleModel roleModel)
     {
         if(StringUtils.isEmpty(roleModel.getId()))
         {
-            insert(roleModel);
+            String insert = insert(roleModel);
+            roleModel.setId(insert);
+            resourceService.saveBatch(roleModel);
         }
         else{
             update(roleModel);
+            resourceService.saveBatch(roleModel);
         }
     }
 
@@ -66,17 +84,28 @@ public class RoleService {
         this.roleMapper.updateByPrimaryKey(copy);
     }
 
-    public void insert(RoleModel roleModel)
+    public String insert(RoleModel roleModel)
     {
 
         Role copy = CopyUtil.copy(roleModel,Role.class);
         Date now  = new Date();
-        copy.setId(UuidUtil.getShortUuid());
+        String shortUuid = UuidUtil.getShortUuid();
+        copy.setId(shortUuid);
         this.roleMapper.insert(copy);
+        return shortUuid;
+
     }
 
     public void delete(String id)
     {
         roleMapper.deleteByPrimaryKey(id);
     }
+
+    public List<RoleResourceModel> listResource(String roleId){
+        RoleResourceExample roleResourceExample = new RoleResourceExample();
+        roleResourceExample.createCriteria().andRoleIdEqualTo(roleId);
+        List<RoleResource> roleResources = roleResourceMapper.selectByExample(roleResourceExample);
+        return CopyUtil.copyList(roleResources,RoleResourceModel.class);
+    }
+
 }
