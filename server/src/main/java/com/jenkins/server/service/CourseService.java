@@ -6,6 +6,7 @@ import com.jenkins.server.entity.Chapter;
 import com.jenkins.server.entity.Course;
 import com.jenkins.server.entity.CourseContent;
 import com.jenkins.server.entity.CourseExample;
+import com.jenkins.server.enums.CourseStatusEnum;
 import com.jenkins.server.mapper.CourseContentMapper;
 import com.jenkins.server.mapper.CourseMapper;
 import com.jenkins.server.mapper.my.MyCourseMapper;
@@ -138,7 +139,7 @@ public class CourseService {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void sort(SortModel sortModel) {
 
         myCourseMapper.updateSort(sortModel);
@@ -152,5 +153,15 @@ public class CourseService {
         if (sortModel.getNewSort() < sortModel.getOldSort()) {
             myCourseMapper.moveSortsBackward(sortModel);
         }
+    }
+
+    public List<CourseModel> listNewCourses(){
+        PageHelper.startPage(1,3);
+        CourseExample courseExample = new CourseExample();
+        courseExample.createCriteria().andStatusEqualTo(CourseStatusEnum.PUBLISH.getCode());
+        courseExample.setOrderByClause("created_at desc");
+        List<Course> courses = courseMapper.selectByExample(courseExample);
+
+        return CopyUtil.copyList(courses,CourseModel.class);
     }
 }
