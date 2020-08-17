@@ -115,4 +115,11 @@ public class ChapterService {
             sectionService.delete(sectionId);
         }
     }
+
+    public List<ChapterModel> listByCourse(String courseId){
+        ChapterExample chapterExample = new ChapterExample();
+        chapterExample.createCriteria().andCourseIdEqualTo(courseId);
+        List<Chapter> chapters = chapterMapper.selectByExample(chapterExample);
+        return CopyUtil.copyList(chapters,ChapterModel.class);
+    }
 }

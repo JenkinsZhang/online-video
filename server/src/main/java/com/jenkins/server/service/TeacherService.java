@@ -88,4 +88,9 @@ public class TeacherService {
         List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
         return CopyUtil.copyList(teachers,TeacherModel.class);
     }
+
+    public TeacherModel findById(String id){
+        Teacher teacher = teacherMapper.selectByPrimaryKey(id);
+        return CopyUtil.copy(teacher,TeacherModel.class);
+    }
 }

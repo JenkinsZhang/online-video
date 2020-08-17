@@ -47,7 +47,7 @@ public class LoginAdminGatewayFilter implements GatewayFilter,Ordered  {
             exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }else {
-            LOG.info("backend interceptor:" + token);
+//            LOG.info("backend interceptor:" + token);
 
             Boolean pass = false;
             JSONObject jsonObject = JSON.parseObject(String.valueOf(loginUser));

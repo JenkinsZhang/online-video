@@ -117,4 +117,11 @@ public class SectionService {
         sectionMapper.deleteByPrimaryKey(id);
         courseService.updateTime(courseId);
     }
+
+    public List<SectionModel> listByCourse(String courseId){
+        SectionExample sectionExample = new SectionExample();
+        sectionExample.createCriteria().andCourseIdEqualTo(courseId);
+        List<Section> sections = sectionMapper.selectByExample(sectionExample);
+        return CopyUtil.copyList(sections,SectionModel.class);
+    }
 }

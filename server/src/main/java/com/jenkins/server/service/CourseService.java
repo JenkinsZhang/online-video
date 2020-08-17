@@ -1,14 +1,12 @@
 package com.jenkins.server.service;
 import java.util.*;
 
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jenkins.server.entity.*;
 import com.jenkins.server.enums.CourseStatusEnum;
-import com.jenkins.server.mapper.CategoryMapper;
-import com.jenkins.server.mapper.CourseCategoryMapper;
-import com.jenkins.server.mapper.CourseContentMapper;
-import com.jenkins.server.mapper.CourseMapper;
+import com.jenkins.server.mapper.*;
 import com.jenkins.server.mapper.my.MyCourseMapper;
 import com.jenkins.server.model.*;
 import com.jenkins.server.utils.CopyUtil;
@@ -38,19 +36,14 @@ public class CourseService {
     private CategoryMapper categoryMapper;
     @Autowired
     private CourseCategoryMapper courseCategoryMapper;
-
     @Autowired
     private ChapterService chapterService;
     @Autowired
     private CourseContentMapper courseContentMapper;
-
-//    @Autowired
-//    public CourseService(CourseMapper courseMapper, MyCourseMapper myCourseMapper, CourseCategoryService courseCategoryService, ChapterService chapterService) {
-//        this.courseMapper = courseMapper;
-//        this.myCourseMapper = myCourseMapper;
-//        this.courseCategoryService = courseCategoryService;
-//        this.chapterService = chapterService;
-//    }
+    @Autowired
+    private SectionService sectionService;
+    @Autowired
+    private TeacherService teacherService;
 
     public void courseList(CoursePageModel pageModel)
     {
@@ -218,5 +211,31 @@ public class CourseService {
         List<Course> courses = courseMapper.selectByExample(courseExample);
 
         return CopyUtil.copyList(courses,CourseModel.class);
+    }
+
+    public CourseModel findCourse(String id){
+        Course course = courseMapper.selectByPrimaryKey(id);
+        if(course == null || !course.getStatus().equals(CourseStatusEnum.PUBLISH.getCode())){
+            return null;
+        }
+        CourseModel courseModel = CopyUtil.copy(course, CourseModel.class);
+        CourseContent courseContent = courseContentMapper.selectByPrimaryKey(id);
+        if(courseContent!=null){
+            courseModel.setContent(courseContent.getContent());
+        }
+        List<ChapterModel> chapterModels = chapterService.listByCourse(id);
+        if(!CollectionUtils.isEmpty(chapterModels)){
+            courseModel.setChapterModels(chapterModels);
+        }
+        List<SectionModel> sectionModels = sectionService.listByCourse(id);
+        if(!CollectionUtils.isEmpty(sectionModels)){
+            courseModel.setSectionModels(sectionModels);
+        }
+        TeacherModel teacherModel = teacherService.findById(course.getTeacherId());
+        if(teacherModel!=null){
+            courseModel.setTeacherModel(teacherModel);
+        }
+
+        return courseModel;
     }
 }

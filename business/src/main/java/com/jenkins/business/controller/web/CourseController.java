@@ -9,6 +9,7 @@ import com.jenkins.server.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.ws.rs.Path;
 import java.util.List;
 
 /**
@@ -51,5 +52,12 @@ public class CourseController {
         return responseModel;
     }
 
+    @GetMapping("/find/{id}")
+    public ResponseModel findCourse(@PathVariable("id") String id){
+        ResponseModel responseModel = new ResponseModel();
+        CourseModel course = courseService.findCourse(id);
+        responseModel.setContent(course);
+        return responseModel;
+    }
 
 }

@@ -78,6 +78,13 @@ public class CourseModel {
 
     private String teacherId;
 
+    private TeacherModel teacherModel;
+
+    private List<SectionModel> sectionModels;
+
+    private List<ChapterModel> chapterModels;
+
+    private String content;
 
     private List<CategoryModel> categorys;
 
@@ -201,6 +208,38 @@ public class CourseModel {
         this.teacherId = teacherId;
     }
 
+    public TeacherModel getTeacherModel() {
+        return teacherModel;
+    }
+
+    public void setTeacherModel(TeacherModel teacherModel) {
+        this.teacherModel = teacherModel;
+    }
+
+    public List<SectionModel> getSectionModels() {
+        return sectionModels;
+    }
+
+    public void setSectionModels(List<SectionModel> sectionModels) {
+        this.sectionModels = sectionModels;
+    }
+
+    public List<ChapterModel> getChapterModels() {
+        return chapterModels;
+    }
+
+    public void setChapterModels(List<ChapterModel> chapterModels) {
+        this.chapterModels = chapterModels;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("CourseModel{");
@@ -218,6 +257,10 @@ public class CourseModel {
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", teacherId='").append(teacherId).append('\'');
+        sb.append(", teacherModel=").append(teacherModel);
+        sb.append(", sectionModels=").append(sectionModels);
+        sb.append(", chapterModels=").append(chapterModels);
+        sb.append(", content='").append(content).append('\'');
         sb.append(", categorys=").append(categorys);
         sb.append('}');
         return sb.toString();
