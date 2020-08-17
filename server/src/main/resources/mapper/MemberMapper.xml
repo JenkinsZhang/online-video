@@ -76,7 +76,7 @@
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from member
+    from website_member
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -87,21 +87,21 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from member
+    from website_member
     where id = #{id,jdbcType=CHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-    delete from member
+    delete from website_member
     where id = #{id,jdbcType=CHAR}
   </delete>
   <delete id="deleteByExample" parameterType="com.jenkins.server.entity.MemberExample">
-    delete from member
+    delete from website_member
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
   <insert id="insert" parameterType="com.jenkins.server.entity.Member">
-    insert into member (id, mobile, `password`, 
+    insert into website_member (id, mobile, `password`, 
       `name`, photo, register_time
       )
     values (#{id,jdbcType=CHAR}, #{mobile,jdbcType=VARCHAR}, #{password,jdbcType=CHAR}, 
@@ -109,7 +109,7 @@
       )
   </insert>
   <insert id="insertSelective" parameterType="com.jenkins.server.entity.Member">
-    insert into member
+    insert into website_member
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
         id,
@@ -152,13 +152,13 @@
     </trim>
   </insert>
   <select id="countByExample" parameterType="com.jenkins.server.entity.MemberExample" resultType="java.lang.Long">
-    select count(*) from member
+    select count(*) from website_member
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update member
+    update website_member
     <set>
       <if test="record.id != null">
         id = #{record.id,jdbcType=CHAR},
@@ -184,7 +184,7 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update member
+    update website_member
     set id = #{record.id,jdbcType=CHAR},
       mobile = #{record.mobile,jdbcType=VARCHAR},
       `password` = #{record.password,jdbcType=CHAR},
@@ -196,7 +196,7 @@
     </if>
   </update>
   <update id="updateByPrimaryKeySelective" parameterType="com.jenkins.server.entity.Member">
-    update member
+    update website_member
     <set>
       <if test="mobile != null">
         mobile = #{mobile,jdbcType=VARCHAR},
@@ -217,7 +217,7 @@
     where id = #{id,jdbcType=CHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.jenkins.server.entity.Member">
-    update member
+    update website_member
     set mobile = #{mobile,jdbcType=VARCHAR},
       `password` = #{password,jdbcType=CHAR},
       `name` = #{name,jdbcType=VARCHAR},

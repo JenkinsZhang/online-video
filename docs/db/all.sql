@@ -277,19 +277,19 @@ create table `member` (
 ) engine=innodb default charset=utf8mb4 comment='member';
 
 # initialize test/test
-insert into `member` (id, mobile, password, name, photo, register_time) values ('00000000', '12345678901', 'e70e2222a9d67c4f2eae107533359aa4', 'test', null, now());
+insert into `website_member` (id, mobile, password, name, photo, register_time) values ('00000000', '12345678901', 'e70e2222a9d67c4f2eae107533359aa4', 'test', null, now());
 
 # 短信验证码
 drop table if exists `sms`;
 create table `sms` (
                        `id` char(8) not null default '' comment 'id',
-                       `mobile` varchar(50) not null comment '手机号',
-                       `code` char(6) not null comment '验证码',
-                       `use` char(1) not null comment '用途|枚举[SmsUseEnum]：REGISTER("R", "注册"), FORGET("F", "忘记密码")',
-                       `at` datetime(3) not null comment '生成时间',
-                       `status` char(1) not null comment '用途|枚举[SmsStatusEnum]：USED("U", "已使用"), NOT_USED("N", "未使用")',
+                       `mobile` varchar(50) not null comment 'phone',
+                       `code` char(6) not null comment 'code',
+                       `use` char(1) not null comment 'Use|Enums[SmsUseEnum]：REGISTER("R", "Register"), FORGET("F", "ForgetPassword")',
+                       `at` datetime(3) not null comment 'created_at',
+                       `status` char(1) not null comment 'Use|Enums[SmsStatusEnum]：USED("U", "Used"), NOT_USED("N", "Not Used")',
                        primary key (`id`)
-) engine=innodb default charset=utf8mb4 comment='短信验证码';
+) engine=innodb default charset=utf8mb4 comment='sms code';
 
 insert into `sms` (id, mobile, code, `use`, at, status) values ('00000000', '12345678901', '123456', 'R', now(), 'N');
 
@@ -297,12 +297,12 @@ insert into `sms` (id, mobile, code, `use`, at, status) values ('00000000', '123
 drop table if exists `member_course`;
 create table `member_course` (
                                  `id` char(8) not null default '' comment 'id',
-                                 `member_id` char(8) not null comment '会员id',
-                                 `course_id` char(8) not null comment '课程id',
-                                 `at` datetime(3) not null comment '报名时间',
+                                 `member_id` char(8) not null comment 'member id',
+                                 `course_id` char(8) not null comment 'course id',
+                                 `at` datetime(3) not null comment 'enrolled at',
                                  primary key (`id`),
                                  unique key `member_course_unique` (`member_id`, `course_id`)
-) engine=innodb default charset=utf8mb4 comment='会员课程报名';
+) engine=innodb default charset=utf8mb4 comment='enroll in course';
 
 # ---------------------- 测试
 
