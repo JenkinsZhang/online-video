@@ -9,7 +9,9 @@ public enum BusinessCode {
     //User login name exists
     USER_LOGIN_NAME_EXISTS("Login name already exists!"),
 
-    LOGIN_ERROR("Wrong login name or password!");
+    USER_LOGIN_ERROR("Wrong login name or password!"),
+
+    MEMBER_LOGIN_ERROR("Wrong cell phone or password!");
     private String desc;
 
     BusinessCode(String desc) {

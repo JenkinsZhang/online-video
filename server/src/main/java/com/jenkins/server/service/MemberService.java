@@ -4,13 +4,17 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.jenkins.server.entity.Member;
 import com.jenkins.server.entity.MemberExample;
+import com.jenkins.server.exception.BusinessCode;
+import com.jenkins.server.exception.BusinessException;
 import com.jenkins.server.mapper.MemberMapper;
+import com.jenkins.server.model.LoginMemberModel;
 import com.jenkins.server.model.MemberModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
@@ -71,6 +75,7 @@ public class MemberService {
 
         Member copy = CopyUtil.copy(memberModel,Member.class);
         Date now  = new Date();
+        copy.setRegisterTime(now);
         copy.setId(UuidUtil.getShortUuid());
         this.memberMapper.insert(copy);
     }
@@ -78,5 +83,37 @@ public class MemberService {
     public void delete(String id)
     {
         memberMapper.deleteByPrimaryKey(id);
+    }
+
+    public Member selectMemberByPhone(String phone){
+        MemberExample memberExample = new MemberExample();
+        memberExample.createCriteria().andMobileEqualTo(phone);
+        List<Member> members = memberMapper.selectByExample(memberExample);
+        if(!CollectionUtils.isEmpty(members)){
+            return members.get(0);
+        }else {
+            return null;
+        }
+    }
+
+    public LoginMemberModel login(MemberModel memberModel){
+        String mobile = memberModel.getMobile();
+        Member member = selectMemberByPhone(mobile);
+        if(member == null){
+            throw new BusinessException(BusinessCode.MEMBER_LOGIN_ERROR);
+        }
+        String password = member.getPassword();
+        System.out.println(memberModel.getPassword());
+        System.out.println(password);
+        if(!password.equals(memberModel.getPassword())){
+            throw new BusinessException(BusinessCode.MEMBER_LOGIN_ERROR);
+        }
+        LoginMemberModel loginMemberModel = new LoginMemberModel();
+        loginMemberModel.setId(member.getId());
+        loginMemberModel.setMobile(member.getMobile());
+        loginMemberModel.setName(member.getName());
+        loginMemberModel.setPhoto(member.getPhoto());
+        return loginMemberModel;
+
     }
 }

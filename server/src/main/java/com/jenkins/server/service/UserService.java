@@ -123,8 +123,8 @@ public class UserService {
         String loginName = userModel.getLoginName();
         User user = selectUserByLoginName(loginName);
         if(user == null) {
-            LOG.error(BusinessCode.LOGIN_ERROR.getDesc());
-            throw new BusinessException(BusinessCode.LOGIN_ERROR);
+            LOG.error(BusinessCode.USER_LOGIN_ERROR.getDesc());
+            throw new BusinessException(BusinessCode.USER_LOGIN_ERROR);
         }else {
             if(userModel.getPassword().equals(user.getPassword()))
             {
@@ -132,8 +132,8 @@ public class UserService {
                 setAuth(loginModel);
                 return loginModel;
             }else {
-                LOG.error(BusinessCode.LOGIN_ERROR.getDesc());
-                throw new BusinessException(BusinessCode.LOGIN_ERROR);
+                LOG.error(BusinessCode.USER_LOGIN_ERROR.getDesc());
+                throw new BusinessException(BusinessCode.USER_LOGIN_ERROR);
             }
         }
     }

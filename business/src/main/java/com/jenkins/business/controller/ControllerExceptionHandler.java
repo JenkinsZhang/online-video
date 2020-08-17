@@ -1,5 +1,6 @@
 package com.jenkins.business.controller;
 
+import com.jenkins.server.exception.BusinessException;
 import com.jenkins.server.exception.ValidatorException;
 import com.jenkins.server.model.ResponseModel;
 import org.slf4j.Logger;
@@ -31,5 +32,16 @@ public class ControllerExceptionHandler {
         return responseModel;
     }
 
+    @ExceptionHandler(value = BusinessException.class)
+    @ResponseBody
+    public ResponseModel businessExceptionHandler(BusinessException e)
+    {
+        String message = e.getBusinessCode().getDesc();
+        ResponseModel responseModel = new ResponseModel();
+        responseModel.setSuccess(false);
+        responseModel.setMsg(message);
+        LOG.error(message);
+        return responseModel;
+    }
 
 }

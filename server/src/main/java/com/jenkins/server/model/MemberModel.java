@@ -36,6 +36,11 @@ public class MemberModel {
         @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date registerTime;
 
+    private String imageCode;
+
+    private String imageToken;
+
+
     public String getId() {
         return id;
     }
@@ -84,21 +89,34 @@ public class MemberModel {
         this.registerTime = registerTime;
     }
 
+    public String getImageCode() {
+        return imageCode;
+    }
+
+    public void setImageCode(String imageCode) {
+        this.imageCode = imageCode;
+    }
+
+    public String getImageToken() {
+        return imageToken;
+    }
+
+    public void setImageToken(String imageToken) {
+        this.imageToken = imageToken;
+    }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(getClass().getSimpleName());
-        sb.append(" [");
-        sb.append("Hash = ").append(hashCode());
-            sb.append(", id=").append(id);
-            sb.append(", mobile=").append(mobile);
-            sb.append(", password=").append(password);
-            sb.append(", name=").append(name);
-            sb.append(", photo=").append(photo);
-            sb.append(", registerTime=").append(registerTime);
-        sb.append("]");
+        final StringBuffer sb = new StringBuffer("MemberModel{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", mobile='").append(mobile).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", photo='").append(photo).append('\'');
+        sb.append(", registerTime=").append(registerTime);
+        sb.append(", imageCode='").append(imageCode).append('\'');
+        sb.append(", imageToken='").append(imageToken).append('\'');
+        sb.append('}');
         return sb.toString();
     }
-
 }
