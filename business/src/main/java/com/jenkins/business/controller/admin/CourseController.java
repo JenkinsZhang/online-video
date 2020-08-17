@@ -31,7 +31,7 @@ public class CourseController {
     }
 
     @PostMapping("/list")
-    public ResponseModel getCourseList (@RequestBody PageModel pageModel){
+    public ResponseModel getCourseList (@RequestBody CoursePageModel pageModel){
 
         courseService.courseList(pageModel);
         ResponseModel responseModel = new ResponseModel();

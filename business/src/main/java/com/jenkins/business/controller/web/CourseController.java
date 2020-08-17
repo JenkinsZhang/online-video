@@ -1,13 +1,13 @@
 package com.jenkins.business.controller.web;
 
+import com.jenkins.server.enums.CourseStatusEnum;
 import com.jenkins.server.model.CourseModel;
+import com.jenkins.server.model.CoursePageModel;
 import com.jenkins.server.model.PageModel;
 import com.jenkins.server.model.ResponseModel;
 import com.jenkins.server.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,5 +34,22 @@ public class CourseController {
         return responseModel;
 
     }
+    @PostMapping("/list")
+    public ResponseModel listCourses(@RequestBody CoursePageModel pageModel){
+        ResponseModel responseModel = new ResponseModel();
+        pageModel.setStatus(CourseStatusEnum.PUBLISH.getCode());
+        courseService.courseList(pageModel);
+        responseModel.setContent(pageModel);
+        return responseModel;
+    }
+    @PostMapping("/list-category")
+    public ResponseModel listCategoryCourses(@RequestBody CoursePageModel pageModel){
+        ResponseModel responseModel = new ResponseModel();
+        pageModel.setStatus(CourseStatusEnum.PUBLISH.getCode());
+        courseService.webCourseList(pageModel);
+        responseModel.setContent(pageModel);
+        return responseModel;
+    }
+
 
 }

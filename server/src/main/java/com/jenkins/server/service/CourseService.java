@@ -1,29 +1,24 @@
 package com.jenkins.server.service;
-import java.util.Date;
+import java.util.*;
+
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.jenkins.server.entity.Chapter;
-import com.jenkins.server.entity.Course;
-import com.jenkins.server.entity.CourseContent;
-import com.jenkins.server.entity.CourseExample;
+import com.jenkins.server.entity.*;
 import com.jenkins.server.enums.CourseStatusEnum;
+import com.jenkins.server.mapper.CategoryMapper;
+import com.jenkins.server.mapper.CourseCategoryMapper;
 import com.jenkins.server.mapper.CourseContentMapper;
 import com.jenkins.server.mapper.CourseMapper;
 import com.jenkins.server.mapper.my.MyCourseMapper;
-import com.jenkins.server.model.CourseContentModel;
-import com.jenkins.server.model.CourseModel;
-import com.jenkins.server.model.PageModel;
-import com.jenkins.server.model.SortModel;
+import com.jenkins.server.model.*;
 import com.jenkins.server.utils.CopyUtil;
 import com.jenkins.server.utils.UuidUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author JenkinsZhang
@@ -40,6 +35,11 @@ public class CourseService {
     @Autowired
     private CourseCategoryService courseCategoryService;
     @Autowired
+    private CategoryMapper categoryMapper;
+    @Autowired
+    private CourseCategoryMapper courseCategoryMapper;
+
+    @Autowired
     private ChapterService chapterService;
     @Autowired
     private CourseContentMapper courseContentMapper;
@@ -52,16 +52,71 @@ public class CourseService {
 //        this.chapterService = chapterService;
 //    }
 
-    public void courseList(PageModel pageModel)
+    public void courseList(CoursePageModel pageModel)
     {
         PageHelper.startPage(pageModel.getPage(),pageModel.getPageSize());
         CourseExample courseExample = new CourseExample();
+        CourseExample.Criteria criteria = courseExample.createCriteria();
+        if(!StringUtils.isEmpty(pageModel.getStatus())){
+            criteria.andStatusEqualTo(pageModel.getStatus());
+        }
         courseExample.setOrderByClause("sort asc");
         List<Course> courseList = courseMapper.selectByExample(courseExample);
         PageInfo<Course> pageInfo = new PageInfo<>(courseList);
         pageModel.setTotal(pageInfo.getTotal());
         List<CourseModel> courseModelList = CopyUtil.copyList(courseList, CourseModel.class);
         pageModel.setList(courseModelList);
+
+    }
+
+    public void webCourseList(CoursePageModel pageModel) {
+        String categoryId = pageModel.getCategoryId();
+        if (StringUtils.isEmpty(categoryId)) {
+            courseList(pageModel);
+            return;
+        }
+        HashSet<String> courseIds = new LinkedHashSet<>();
+        CategoryExample categoryExample = new CategoryExample();
+        CategoryExample.Criteria criteria1 = categoryExample.createCriteria();
+        criteria1.andIdEqualTo(categoryId);
+        CategoryExample.Criteria criteria2 = categoryExample.createCriteria();
+        criteria2.andParentEqualTo(categoryId);
+        categoryExample.or(criteria2);
+        List<Category> categories = categoryMapper.selectByExample(categoryExample);
+        if(categories.size() == 0){
+            pageModel.setTotal(0);
+            pageModel.setList(new ArrayList<CourseModel>());
+            return;
+        }
+        for (Category category : categories) {
+            String categoryIdDB = category.getId();
+            CourseCategoryExample courseCategoryExample = new CourseCategoryExample();
+            courseCategoryExample.createCriteria().andCategoryIdEqualTo(categoryIdDB);
+            List<CourseCategory> courseCategories = courseCategoryMapper.selectByExample(courseCategoryExample);
+            if(!CollectionUtils.isEmpty(courseCategories)){
+                for (CourseCategory courseCategory : courseCategories) {
+                    String courseId = courseCategory.getCourseId();
+                    courseIds.add(courseId);
+                }
+            }
+        }
+        ArrayList<String> listCourseIds = new ArrayList<>();
+        listCourseIds.addAll(courseIds);
+        PageHelper.startPage(pageModel.getPage(),pageModel.getPageSize());
+        CourseExample courseExample = new CourseExample();
+        if(courseIds.size() !=0){
+            courseExample.createCriteria().andIdIn(listCourseIds);
+        }
+        else {
+            pageModel.setTotal(0);
+            pageModel.setList(new ArrayList<CourseModel>());
+            return;
+        }
+        courseExample.setOrderByClause("sort asc");
+        List<Course> courses = courseMapper.selectByExample(courseExample);
+        PageInfo<Course> pageInfo = new PageInfo<>(courses);
+        pageModel.setTotal(pageInfo.getTotal());
+        pageModel.setList(CopyUtil.copyList(courses,CourseModel.class));
 
     }
     @Transactional(rollbackFor = Exception.class)
