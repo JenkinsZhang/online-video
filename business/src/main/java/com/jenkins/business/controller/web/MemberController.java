@@ -9,10 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.util.DigestUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.TimeUnit;
@@ -84,6 +81,14 @@ public class MemberController {
         login.setToken(token);
         redisTemplate.opsForValue().set(token, JSON.toJSONString(login),10800, TimeUnit.SECONDS);
         responseModel.setContent(login);
+        return responseModel;
+    }
+
+    @GetMapping("/logout/{token}")
+    public ResponseModel login(@PathVariable("token") String token)
+    {
+        redisTemplate.delete(token);
+        ResponseModel responseModel = new ResponseModel();
         return responseModel;
     }
 
