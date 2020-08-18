@@ -124,6 +124,8 @@ public class MemberService {
             throw  new BusinessException(BusinessCode.MEMBER_NOT_EXISTS);
         }
         memberModel.setId(member.getId());
+        memberModel.setName(member.getName());
+        memberModel.setPhoto(member.getPhoto());
         save(memberModel);
     }
 

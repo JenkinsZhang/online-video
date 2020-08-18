@@ -1,11 +1,9 @@
 package com.jenkins.business.controller.web;
 
 import com.jenkins.server.enums.CourseStatusEnum;
-import com.jenkins.server.model.CourseModel;
-import com.jenkins.server.model.CoursePageModel;
-import com.jenkins.server.model.PageModel;
-import com.jenkins.server.model.ResponseModel;
+import com.jenkins.server.model.*;
 import com.jenkins.server.service.CourseService;
+import com.jenkins.server.service.MemberCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +21,9 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private MemberCourseService memberCourseService;
 
     public static final String BUSINESS_NAME ="Web Course";
 
@@ -60,4 +61,19 @@ public class CourseController {
         return responseModel;
     }
 
+    @PostMapping("/enroll")
+    public ResponseModel enroll(@RequestBody MemberCourseModel memberCourseModel){
+        ResponseModel responseModel = new ResponseModel();
+        MemberCourseModel enroll = memberCourseService.enroll(memberCourseModel);
+        responseModel.setContent(enroll);
+        return responseModel;
+    }
+
+    @PostMapping("/find-enroll")
+    public ResponseModel findEnroll(@RequestBody MemberCourseModel memberCourseModel){
+        ResponseModel responseModel = new ResponseModel();
+        MemberCourseModel enroll = memberCourseService.getEnroll(memberCourseModel);
+        responseModel.setContent(enroll);
+        return responseModel;
+    }
 }

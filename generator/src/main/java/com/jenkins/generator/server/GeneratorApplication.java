@@ -58,8 +58,8 @@ public class GeneratorApplication {
         TemplateUtil.generate(toServicePath+entity+"Service.java",map);
 
         //Controller
-        TemplateUtil.init("Controller.ftl");
-        TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
+//        TemplateUtil.init("Controller.ftl");
+//        TemplateUtil.generate(toControllerPath+entity+"Controller.java",map);
 
         //Model
         TemplateUtil.init("Model.ftl");
