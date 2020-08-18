@@ -40,6 +40,7 @@ public class MemberModel {
 
     private String imageToken;
 
+    private String smsCode;
 
     public String getId() {
         return id;
@@ -105,6 +106,14 @@ public class MemberModel {
         this.imageToken = imageToken;
     }
 
+    public String getSmsCode() {
+        return smsCode;
+    }
+
+    public void setSmsCode(String smsCode) {
+        this.smsCode = smsCode;
+    }
+
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("MemberModel{");
@@ -116,6 +125,7 @@ public class MemberModel {
         sb.append(", registerTime=").append(registerTime);
         sb.append(", imageCode='").append(imageCode).append('\'');
         sb.append(", imageToken='").append(imageToken).append('\'');
+        sb.append(", smsCode='").append(smsCode).append('\'');
         sb.append('}');
         return sb.toString();
     }

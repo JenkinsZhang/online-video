@@ -1,8 +1,11 @@
 package com.jenkins.business.controller.web;
 
 import com.alibaba.fastjson.JSON;
+import com.jenkins.server.entity.Member;
+import com.jenkins.server.enums.SmsUseEnum;
 import com.jenkins.server.model.*;
 import com.jenkins.server.service.MemberService;
+import com.jenkins.server.service.SmsService;
 import com.jenkins.server.utils.UuidUtil;
 import com.jenkins.server.utils.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +29,15 @@ public class MemberController {
     MemberService memberService;
 
     @Autowired
+    SmsService smsService;
+
+    @Autowired
     RedisTemplate redisTemplate;
     private static final String BUSINESS_NAME = "Web member";
 
     @PostMapping("/register")
     public ResponseModel register(@RequestBody MemberModel memberModel) {
-        // 保存校验
+        // field validation
         ValidatorUtil.require(memberModel.getMobile(), "phone");
         ValidatorUtil.length(memberModel.getMobile(), 11, 11, "Phone");
         ValidatorUtil.require(memberModel.getPassword(), "password");
@@ -42,12 +48,11 @@ public class MemberController {
         memberModel.setPassword(DigestUtils.md5DigestAsHex(memberModel.getPassword().getBytes()));
 
         // 校验短信验证码
-//        SmsModel smsModel = new SmsModel();
-//        smsModel.setMobile(memberModel.getMobile());
-//        smsModel.setCode(memberModel.getSmsCode());
-//        smsModel.setUse(SmsUseEnum.REGISTER.getCode());
-//        smsService.validCode(smsModel);
-//        LOG.info("短信验证码校验通过");
+        SmsModel smsModel = new SmsModel();
+        smsModel.setMobile(memberModel.getMobile());
+        smsModel.setCode(memberModel.getSmsCode());
+        smsModel.setUse(SmsUseEnum.REGISTER.getCode());
+        smsService.validCode(smsModel);
 
         ResponseModel responseModel = new ResponseModel();
         memberService.save(memberModel);
@@ -84,11 +89,44 @@ public class MemberController {
         return responseModel;
     }
 
+    @PostMapping("/reset-password")
+    public ResponseModel resetPassword(@RequestBody MemberModel memberModel)
+    {
+        ValidatorUtil.require(memberModel.getMobile(), "phone");
+        ValidatorUtil.length(memberModel.getMobile(), 11, 11, "Phone");
+        ValidatorUtil.require(memberModel.getPassword(), "password");
+
+        memberModel.setPassword(DigestUtils.md5DigestAsHex(memberModel.getPassword().getBytes()));
+
+        SmsModel smsModel = new SmsModel();
+        smsModel.setMobile(memberModel.getMobile());
+        smsModel.setCode(memberModel.getSmsCode());
+        smsModel.setUse(SmsUseEnum.FORGET.getCode());
+        smsService.validCode(smsModel);
+
+        ResponseModel responseModel = new ResponseModel();
+        memberService.resetPassword(memberModel);
+        responseModel.setContent(memberModel);
+        return responseModel;
+    }
     @GetMapping("/logout/{token}")
     public ResponseModel login(@PathVariable("token") String token)
     {
         redisTemplate.delete(token);
         ResponseModel responseModel = new ResponseModel();
+        return responseModel;
+    }
+
+    @GetMapping("/is-mobile-exist/{mobile}")
+    public ResponseModel isMobileExist(@PathVariable("mobile")String mobile){
+        ResponseModel responseModel = new ResponseModel();
+        Member member = memberService.selectMemberByPhone(mobile);
+        if(member == null){
+            responseModel.setSuccess(true);
+        }
+        else {
+            responseModel.setSuccess(false);
+        }
         return responseModel;
     }
 

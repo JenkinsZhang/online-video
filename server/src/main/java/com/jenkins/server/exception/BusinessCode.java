@@ -11,7 +11,13 @@ public enum BusinessCode {
 
     USER_LOGIN_ERROR("Wrong login name or password!"),
 
-    MEMBER_LOGIN_ERROR("Wrong cell phone or password!");
+    MEMBER_LOGIN_ERROR("Wrong cell phone or password!"),
+
+    SMS_CODE_FREQUENT("Too frequently!"),
+
+    WRONG_SMS_CODE("Wrong SMS code!"),
+
+    MEMBER_NOT_EXISTS("Member doesn't exist!");
     private String desc;
 
     BusinessCode(String desc) {

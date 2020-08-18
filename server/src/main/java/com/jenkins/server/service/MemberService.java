@@ -116,4 +116,15 @@ public class MemberService {
         return loginMemberModel;
 
     }
+
+    public void resetPassword(MemberModel memberModel){
+        String mobile = memberModel.getMobile();
+        Member member = selectMemberByPhone(mobile);
+        if(member == null){
+            throw  new BusinessException(BusinessCode.MEMBER_NOT_EXISTS);
+        }
+        memberModel.setId(member.getId());
+        save(memberModel);
+    }
+
 }
