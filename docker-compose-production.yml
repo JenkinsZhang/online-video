@@ -1,14 +1,14 @@
 version: "3"
 services:
   eureka:
-    image: eureka
+    image: online-video-eureka
     ports:
       - "10090:10090"
     environment:
       - "--spring.profiles.active=pro"
 
   business:
-    image: business
+    image: online-video-business
     links:
       - eureka:discovery
     ports:
@@ -16,7 +16,7 @@ services:
     environment:
       - "--spring.profiles.active=pro"
   gateway:
-    image: gateway
+    image: online-video-gateway
     ports:
       - "10000:10000"
     links:
@@ -24,7 +24,7 @@ services:
     environment:
       - "--spring.profiles.active=pro"
   file:
-    image: file
+    image: online-video-file
     ports:
       - "10093:10093"
     links:
@@ -34,7 +34,7 @@ services:
     environment:
       - "--spring.profiles.active=pro"
   system:
-    image: system
+    image: online-video-system
     ports:
       - "10091:10091"
     links:
