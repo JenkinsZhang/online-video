@@ -36,7 +36,7 @@ public class LogAspect {
 
     private static final Logger LOG = LoggerFactory.getLogger(LogAspect.class);
 
-    @Pointcut("execution(public * com.jenkins.*.controller..*Controller.*(..))")
+    @Pointcut("execution(public * com.jenkins.*.controller.*.*Controller.*(..))")
     public void controllerPointcut()
     { }
 

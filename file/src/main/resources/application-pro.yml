@@ -1,5 +1,5 @@
 server:
-  port: 9093
+  port: 10093
   servlet:
     context-path: /file
 
@@ -15,15 +15,14 @@ eureka:
   client:
 #    fetch-registry: false
     service-url:
-      defaultZone: http://discovery:9090/eureka
+      defaultZone: http://discovery:10090/eureka
   instance:
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
-    prefer-ip-address: true
 
 file:
-  dest: /Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Saved_Files/
-  url: http://localhost:9000/file/f/
+  dest: /home/jenkinszhang1998/Jobs/LinkedInProjects/onlineVideo/Saved_Files
+  url: http://localhost:10000/file/f/
 
 oss:
   endpoint: http://oss-cn-shanghai.aliyuncs.com/
@@ -35,3 +34,5 @@ vod:
   accessKeyId: LTAI4G8AdWYM9h3QrdGfKL9W
   accessKeySecret: C7hEkQwJSmiFfn7CtcyJWEZ9oAyjPY
 
+logging:
+  config: classpath:logback-pro.xml

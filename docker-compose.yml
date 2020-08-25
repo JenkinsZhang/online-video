@@ -1,0 +1,37 @@
+version: "3"
+services:
+  eureka:
+    image: eureka
+    ports:
+      - "9090:9090"
+
+
+  business:
+    image: business
+    links:
+      - eureka:discovery
+    ports:
+      - "9092:9092"
+
+  gateway:
+    image: gateway
+    ports:
+      - "9000:9000"
+    links:
+      - eureka:discovery
+
+  file:
+    image: file
+    ports:
+      - "9093:9093"
+    links:
+      - eureka:discovery
+    volumes:
+    - /Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Saved_Files/:/Users/jenkinszhang/Jobs/LinkedInProjects/onlineVideo/Saved_Files/
+
+  system:
+    image: system
+    ports:
+      - "9091:9091"
+    links:
+      - eureka:discovery

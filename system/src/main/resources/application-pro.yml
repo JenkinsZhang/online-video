@@ -1,5 +1,5 @@
 server:
-  port: 9091
+  port: 10091
   servlet:
     context-path: /system
 
@@ -11,10 +11,10 @@ eureka:
   client:
 #    fetch-registry: false
     service-url:
-      defaultZone: http://discovery:9090/eureka
+      defaultZone: http://localhost:10090/eureka
   instance:
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
 
-
-
+logging:
+  config: classpath:logback-pro.xml

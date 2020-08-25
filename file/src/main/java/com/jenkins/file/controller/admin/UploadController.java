@@ -55,6 +55,7 @@ public class UploadController {
         assert fileUseEnum != null;
         String dir = fileUseEnum.getDesc().toLowerCase();
         File fullDir = new File(FILE_DEST + dir);
+
         if (!fullDir.exists()) {
             fullDir.mkdir();
         }
