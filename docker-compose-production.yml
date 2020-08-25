@@ -4,7 +4,8 @@ services:
     image: eureka
     ports:
       - "10090:10090"
-
+    environment:
+      - "--spring.profiles.active=pro"
 
   business:
     image: business
@@ -12,14 +13,16 @@ services:
       - eureka:discovery
     ports:
       - "10092:10092"
-
+    environment:
+      - "--spring.profiles.active=pro"
   gateway:
     image: gateway
     ports:
       - "10000:10000"
     links:
       - eureka:discovery
-
+    environment:
+      - "--spring.profiles.active=pro"
   file:
     image: file
     ports:
@@ -28,10 +31,13 @@ services:
       - eureka:discovery
     volumes:
     - /home/jenkinszhang1998/Jobs/LinkedInProjects/onlineVideo/Saved_Files:/home/jenkinszhang1998/Jobs/LinkedInProjects/onlineVideo/Saved_Files
-
+    environment:
+      - "--spring.profiles.active=pro"
   system:
     image: system
     ports:
       - "10091:10091"
     links:
       - eureka:discovery
+    environment:
+      - "--spring.profiles.active=pro"

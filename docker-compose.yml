@@ -4,7 +4,8 @@ services:
     image: eureka
     ports:
       - "9090:9090"
-
+    environment:
+      - "--spring.profiles.active=pro"
 
   business:
     image: business
