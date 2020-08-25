@@ -6,6 +6,8 @@ server:
 spring:
   application:
     name: system
+  redis:
+    host: 34.105.212.23
 
 eureka:
   client:

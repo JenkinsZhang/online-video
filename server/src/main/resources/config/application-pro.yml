@@ -9,6 +9,7 @@ spring:
       pool:
         max-active: 10
         max-idle: 10
+    host: 34.105.212.23
 
 mybatis:
   type-aliases-package: com.jenkins.server

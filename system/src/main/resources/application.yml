@@ -6,6 +6,8 @@ server:
 spring:
   application:
     name: system
+  redis:
+    host: 34.105.212.23
 
 eureka:
   client:
@@ -15,6 +17,5 @@ eureka:
   instance:
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
-
 
 
