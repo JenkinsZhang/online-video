@@ -13,7 +13,7 @@ eureka:
   client:
 #    fetch-registry: false
     service-url:
-      defaultZone: http://localhost:10090/eureka
+      defaultZone: http://discovery:10090/eureka
   instance:
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 15
