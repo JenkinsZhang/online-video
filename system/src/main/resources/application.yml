@@ -7,7 +7,7 @@ spring:
   application:
     name: system
   redis:
-    host: 34.105.212.23
+    host: 34.105.224.222
 
 eureka:
   client:
