@@ -29,7 +29,7 @@ spring:
           filters:
             - name: LoginAdmin
   redis:
-    host: 34.105.224.222
+    host: 35.246.12.177
 eureka:
   client:
 #    fetch-registry: false

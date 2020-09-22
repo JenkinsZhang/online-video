@@ -22,7 +22,7 @@ eureka:
 
 file:
   dest: /home/jenkinszhang1998/Jobs/LinkedInProjects/onlineVideo/Saved_Files/
-  url: http://34.105.224.222:10000/file/f/
+  url: http://35.246.12.177:10000/file/f/
 
 oss:
   endpoint: http://oss-cn-shanghai.aliyuncs.com/
