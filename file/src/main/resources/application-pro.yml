@@ -24,15 +24,5 @@ file:
   dest: /home/jenkinszhang1998/Jobs/LinkedInProjects/onlineVideo/Saved_Files/
   url: http://35.246.12.177:10000/file/f/
 
-oss:
-  endpoint: http://oss-cn-shanghai.aliyuncs.com/
-  accessKeyId: LTAI4G8AdWYM9h3QrdGfKL9W
-  accessKeySecret: C7hEkQwJSmiFfn7CtcyJWEZ9oAyjPY
-  bucket: course-onlinevideo
-  url: http://course-onlinevideo.oss-cn-shanghai.aliyuncs.com/
-vod:
-  accessKeyId: LTAI4G8AdWYM9h3QrdGfKL9W
-  accessKeySecret: C7hEkQwJSmiFfn7CtcyJWEZ9oAyjPY
-
 logging:
   config: classpath:logback-pro.xml
